@@ -7,8 +7,11 @@ public class Case extends Drawable{
 	protected Pac_Man pacman;
 	protected Fantome fantome;
 	
-	public Case(boolean walkable) {
-		
+	public Case(boolean walkable, BonusEntity bonus, Pac_Man pacman, Fantome fantome) {
+		this.walkable = walkable;
+		this.bonus = bonus;
+		this.pacman = pacman;
+		this.fantome = fantome;
 	}
 	
 	public boolean isWalkable() {
