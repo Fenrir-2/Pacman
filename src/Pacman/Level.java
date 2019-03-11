@@ -103,8 +103,8 @@ public class Level {
 			if(line.toCharArray()[0] == 'P') {
 				//Getting the X and Y location of Pacman
 				String[] pacLocLine = line.split(" ");
-				int x = Integer.parseInt(pacLocLine[1]);
-				int y = Integer.parseInt(pacLocLine[2]);
+				int x = Integer.parseInt(pacLocLine[1].trim());
+				int y = Integer.parseInt(pacLocLine[2].trim());
 				
 				assert(x > 0) : "X location of Pacman negative";
 				assert(y > 0) : "Y location of Pacman negative";
@@ -117,30 +117,12 @@ public class Level {
 				this.list.get(x).get(y).setPacMan(new Pac_Man());
 			}
 			
-			//Checking if ghost location
-			if(line.toCharArray()[0] == 'F') {
-				//Getting the X and Y location of the ghost
-				String[] ghostLocLine = line.split(" ");
-				int x = Integer.parseInt(ghostLocLine[1]);
-				int y = Integer.parseInt(ghostLocLine[2]);
-				
-				assert(x > 0) : "X location of ghost negative";
-				assert(y > 0) : "Y location of ghost negative";
-				assert(x < this.list.size()) : "X location of ghost greater than board maximum";
-				assert(y >  this.list.get(0).size()) : "Y location of ghost greater than board maximum";
-				
-				System.out.println("Ghost detected @ " + x + "," + y);
-				
-				//Setting the ghost on the right board square
-				this.list.get(x).get(y).setFantome(new Fantome());;
-			}
-			
 			//Checking if bonus location
 			if(line.toCharArray()[0] == 'S') {
 				//Getting the X and Y location of the ghost
 				String[] bonusLocLine = line.split(" ");
-				int x = Integer.parseInt(bonusLocLine[1]);
-				int y = Integer.parseInt(bonusLocLine[2]);
+				int x = Integer.parseInt(bonusLocLine[1].trim());
+				int y = Integer.parseInt(bonusLocLine[2].trim());
 				
 				assert(x > 0) : "X location of bonus negative";
 				assert(y > 0) : "Y location of bonus negative";
@@ -151,6 +133,24 @@ public class Level {
 				
 				//Setting the ghost on the right board square
 				this.list.get(x).get(y).setBonus(new BonusEntity(this.index));;
+			}
+			
+			//Checking if ghost location
+			if(line.toCharArray()[0] == 'F') {
+				//Getting the X and Y location of the ghost
+				String[] ghostLocLine = line.split(" ");
+				int x = Integer.parseInt(ghostLocLine[1].trim());
+				int y = Integer.parseInt(ghostLocLine[2].trim());
+				
+				assert(x > 0) : "X location of ghost negative";
+				assert(y > 0) : "Y location of ghost negative";
+				assert(x < this.list.size()) : "X location of ghost greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of ghost greater than board maximum";
+				
+				System.out.println("Ghost detected @ " + x + "," + y);
+				
+				//Setting the ghost on the right board square
+				this.list.get(x).get(y).setFantome(new Fantome());;
 			}
 		}
 		
