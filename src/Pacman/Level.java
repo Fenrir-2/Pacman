@@ -2,6 +2,11 @@ package Pacman;
 
 import java.util.ArrayList;
 
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+
 public class Level {
 	
 	/**
@@ -37,8 +42,40 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Loads the file that contains the level corresponding to the index
+	 * 
+	 */
 	public void changeList() {
+		InputStreamReader fileInput = null;
+		try {
+			fileInput = new InputStreamReader(new FileInputStream("Level" + index));
+		} catch (FileNotFoundException e) {
+			System.out.println("Could not find the level: " + this.index);
+			e.printStackTrace();
+		}
 		
+		String fileText = "";
+		char[] buffer = new char[1024];
+		
+		if(fileInput != null) {
+			int len = 0;
+			try {
+				len = fileInput.read(buffer);
+			} catch (IOException e) {
+				System.out.println("Error while reading first kB of file");
+				e.printStackTrace();
+			}
+			
+			while(len != -1) {
+				try {
+					len = fileInput.read(buffer);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				fileText += String.valueOf(buffer);
+			}
+		}
 	}
 	
 	public void computeNextFrame() {
