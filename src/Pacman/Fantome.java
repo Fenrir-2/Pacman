@@ -1,3 +1,4 @@
+package Pacman;
 
 public class Fantome extends MoveableEntity{
 	

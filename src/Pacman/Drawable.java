@@ -1,3 +1,5 @@
+package Pacman;
+
 
 public class Drawable {
 	

@@ -1,3 +1,4 @@
+package Pacman;
 
 public class MoveableEntity extends Entity{
 	

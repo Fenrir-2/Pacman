@@ -1,3 +1,4 @@
+package Pacman;
 
 public class Pac_Man extends MoveableEntity{
 	

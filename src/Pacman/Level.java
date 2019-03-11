@@ -1,3 +1,5 @@
+package Pacman;
+
 import java.util.ArrayList;
 
 public class Level {

@@ -1,3 +1,4 @@
+package Pacman;
 
 public class BonusEntity extends MoveableEntity{
 	
