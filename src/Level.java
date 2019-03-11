@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public class Level {
 	
-	private int index = 1;
+	protected int index = 1;
+	protected ArrayList<ArrayList<Case>> list; 
 	
 	public Level() {
 		
