@@ -2,17 +2,17 @@ package Pacman;
 
 public class Case extends Drawable{
 	
-	private boolean Walkable;
-	private BonusEntity bonus = new BonusEntity();
-	private Pac_Man pacman = new Pac_Man();
-	private Fantome fantome = new Fantome();
+	protected boolean walkable;
+	protected BonusEntity bonus;
+	protected Pac_Man pacman;
+	protected Fantome fantome;
 	
-	public Case() {
+	public Case(boolean walkable) {
 		
 	}
 	
 	public boolean isWalkable() {
-		return this.Walkable;
+		return this.walkable;
 	}
 	
 	public BonusEntity getBonus() {
@@ -39,6 +39,17 @@ public class Case extends Drawable{
 		this.fantome = fantome;
 	}
 	
-	
-
+	public void draw() {
+		if(this.pacman != null){
+			this.pacman.draw();			
+		}
+		
+		if(this.fantome != null) {
+			this.fantome.draw();
+		}
+		
+		if(this.bonus != null) {
+			this.bonus.draw();
+		}
+	}
 }
