@@ -1,13 +1,17 @@
 package Pacman;
 
 import java.util.ArrayList;
-
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
 public class Level {
+	
+	/**
+	 * Number of levels
+	 */
+	public static final int MAX_INDEX = 3;
 	
 	/**
 	 * Holds the number of the current level
@@ -47,6 +51,9 @@ public class Level {
 	 * 
 	 */
 	public void changeList() {
+		assert(index > 0) : "Invalid index : Negative.";
+		assert(index < MAX_INDEX) : "Invalid index : Greater than MAX_INDEX";
+		//Loads the file, then puts it in the fileText string
 		InputStreamReader fileInput = null;
 		try {
 			fileInput = new InputStreamReader(new FileInputStream("Level" + index));
@@ -77,7 +84,7 @@ public class Level {
 			}
 		}
 		
-		System.out.println(fileText);
+		//File parsing
 	}
 	
 	public void computeNextFrame() {
