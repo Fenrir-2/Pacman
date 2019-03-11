@@ -98,6 +98,60 @@ public class Level {
 				list.add(caseLine);
 				System.out.println(caseLine.size());
 			}
+			
+			//Checking if Pacman location
+			if(line.toCharArray()[0] == 'P') {
+				//Getting the X and Y location of Pacman
+				String[] pacLocLine = line.split(" ");
+				int x = Integer.parseInt(pacLocLine[1]);
+				int y = Integer.parseInt(pacLocLine[2]);
+				
+				assert(x > 0) : "X location of Pacman negative";
+				assert(y > 0) : "Y location of Pacman negative";
+				assert(x < this.list.size()) : "X location of Pacman greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of Pacman greater than board maximum";
+				
+				System.out.println("Pacman detected @ " + x + "," + y);
+				
+				//Setting the Pacman on the right board square
+				this.list.get(x).get(y).setPacMan(new Pac_Man());
+			}
+			
+			//Checking if ghost location
+			if(line.toCharArray()[0] == 'F') {
+				//Getting the X and Y location of the ghost
+				String[] ghostLocLine = line.split(" ");
+				int x = Integer.parseInt(ghostLocLine[1]);
+				int y = Integer.parseInt(ghostLocLine[2]);
+				
+				assert(x > 0) : "X location of ghost negative";
+				assert(y > 0) : "Y location of ghost negative";
+				assert(x < this.list.size()) : "X location of ghost greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of ghost greater than board maximum";
+				
+				System.out.println("Ghost detected @ " + x + "," + y);
+				
+				//Setting the ghost on the right board square
+				this.list.get(x).get(y).setFantome(new Fantome());;
+			}
+			
+			//Checking if bonus location
+			if(line.toCharArray()[0] == 'S') {
+				//Getting the X and Y location of the ghost
+				String[] bonusLocLine = line.split(" ");
+				int x = Integer.parseInt(bonusLocLine[1]);
+				int y = Integer.parseInt(bonusLocLine[2]);
+				
+				assert(x > 0) : "X location of bonus negative";
+				assert(y > 0) : "Y location of bonus negative";
+				assert(x < this.list.size()) : "X location of bonus greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
+				
+				System.out.println("Bonus detected @ " + x + "," + y);
+				
+				//Setting the ghost on the right board square
+				this.list.get(x).get(y).setBonus(new BonusEntity(this.index));;
+			}
 		}
 		
 		System.out.println(list.size());
