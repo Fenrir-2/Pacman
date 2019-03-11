@@ -76,6 +76,8 @@ public class Level {
 				fileText += String.valueOf(buffer);
 			}
 		}
+		
+		System.out.println(fileText);
 	}
 	
 	public void computeNextFrame() {
@@ -96,7 +98,7 @@ public class Level {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		Level board = new Level();
 	}
 
 }
