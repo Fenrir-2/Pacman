@@ -27,5 +27,7 @@ public class Pac_Man extends MoveableEntity{
 	public void addscore(int score) {
 		this.Score = this.Score+score;
 	}
-
+/*
+ * Gros shlag
+ */
 }
