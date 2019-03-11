@@ -1,7 +1,7 @@
 package Pacman;
 
 
-public class Drawable {
+public abstract class Drawable {
 	
 	private int imageSprite;
 	private int posHor;
@@ -11,8 +11,6 @@ public class Drawable {
 		
 	}
 	
-	public void draw() {
-		
-	}
+	public abstract void draw();
 
 }
