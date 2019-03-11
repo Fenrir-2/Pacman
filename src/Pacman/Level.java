@@ -85,6 +85,22 @@ public class Level {
 		}
 		
 		//File parsing
+		String[] lines = fileText.split("\n");
+		
+		for(String line : lines) {
+			//Checking if line definition
+			if(line.toCharArray()[0] == 'f' || line.toCharArray()[0] == 't') {
+				ArrayList<Case> caseLine = new ArrayList<Case>();
+				//Allows to work on each character separately
+				for(char caseDef : line.toCharArray()) {
+					caseLine.add(new Case(caseDef == 't', null, null, null));
+				}
+				list.add(caseLine);
+				System.out.println(caseLine.size());
+			}
+		}
+		
+		System.out.println(list.size());
 	}
 	
 	public void computeNextFrame() {
