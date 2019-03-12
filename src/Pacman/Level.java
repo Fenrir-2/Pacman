@@ -93,7 +93,10 @@ public class Level {
 				ArrayList<Case> caseLine = new ArrayList<Case>();
 				//Allows to work on each character separately
 				for(char caseDef : line.toCharArray()) {
-					caseLine.add(new Case(caseDef == 't', null, null, null));
+					//Checking in case garbage was slipped inside a line def
+					if(caseDef == 'f' || caseDef == 't') {
+						caseLine.add(new Case(caseDef == 't', null, null, null));
+					}
 				}
 				list.add(caseLine);
 				System.out.println(caseLine.size());
