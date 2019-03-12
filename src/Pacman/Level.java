@@ -39,8 +39,10 @@ public class Level {
 	 * Runs through the list and draws each square.
 	 */
 	public void drawList() {
+		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
+				System.out.println(boardCase);
 				boardCase.draw();
 			}
 		}
@@ -86,18 +88,22 @@ public class Level {
 		
 		//File parsing
 		String[] lines = fileText.split("\n");
-		
+		int i = 0;
+		int j = 0;
 		for(String line : lines) {
 			//Checking if line definition
 			if(line.toCharArray()[0] == 'f' || line.toCharArray()[0] == 't') {
 				ArrayList<Case> caseLine = new ArrayList<Case>();
 				//Allows to work on each character separately
 				for(char caseDef : line.toCharArray()) {
-					caseLine.add(new Case(caseDef == 't', null, null, null));
+					caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
+					i=i+10;
 				}
 				list.add(caseLine);
 				System.out.println(caseLine.size());
 			}
+			i=0;
+			j=j+10;
 		}
 		
 		System.out.println(list.size());
@@ -122,6 +128,10 @@ public class Level {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Level board = new Level();
+		board.changeList();
+		board.drawList();
+		
+		
 	}
 
 }

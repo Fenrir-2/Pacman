@@ -1,13 +1,16 @@
 package Pacman;
 
+import java.awt.image.BufferedImage;
 
 public abstract class Drawable {
 	
-	private int imageSprite;
-	private int posHor;
-	private int posVer;
+	protected BufferedImage imageSprite;
+	protected int posHor;
+	protected int posVer;
 	
-	public Drawable() {
+	public Drawable(int x, int y) {
+		this.posHor = x;
+		this.posVer = y;
 		
 	}
 	
