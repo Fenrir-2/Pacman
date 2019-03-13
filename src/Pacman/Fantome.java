@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 
 public class Fantome extends MoveableEntity{
 	
-	private boolean spooked;
-	private boolean dead;
+	protected boolean spooked;
+	protected boolean dead;
 	
 	public Fantome(int x, int y) {
 		super(x, y);

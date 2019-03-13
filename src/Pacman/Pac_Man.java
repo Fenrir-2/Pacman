@@ -8,9 +8,9 @@ import javax.imageio.ImageIO;
 public class Pac_Man extends MoveableEntity{
 	
 	
-	private int nbVies = 3;
-	private boolean SuperMode = false;
-	private int Score = 0;
+	protected int nbVies = 3;
+	protected boolean SuperMode = false;
+	protected int Score = 0;
 	
 	public Pac_Man(int x, int y) {
 		super(x, y);
