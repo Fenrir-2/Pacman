@@ -5,11 +5,31 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Short class desciption
+ * 
+ * @author Nicolas FONNIER, Henri GLEVEAU
+ *
+ */
 public class BonusEntity extends MoveableEntity{
 	
+	/**
+	 * 
+	 */
 	protected int Score;
+	
+	/**
+	 * 
+	 */
 	protected String type;
 	
+	/**
+	 * 
+	 * @param type
+	 * @param level
+	 * @param x
+	 * @param y
+	 */
 	public BonusEntity(String type, int level, int x, int y) {
 		super (x, y);
 		String filename = "bonus_";

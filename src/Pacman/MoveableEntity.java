@@ -1,5 +1,11 @@
 package Pacman;
 
+/**
+ * Short class description
+ * 
+ * @author Nicolas FONNIER, Henri GLEVEAU
+ *
+ */
 public class MoveableEntity extends Entity{
 	
 	/**

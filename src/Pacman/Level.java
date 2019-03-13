@@ -6,6 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
+/**
+ * Short class description
+ * 
+ * @author Nicolas FONNIER, Henri GLEVEAU
+ *
+ */
 public class Level {
 	
 	/**
@@ -37,6 +43,7 @@ public class Level {
 	
 	/**
 	 * Runs through the list and draws each square.
+	 * Draws, in order: Squares, bonus, ghost, Pacman
 	 */
 	public void drawList() {
 		Pac_Man pacman = null;
@@ -58,7 +65,7 @@ public class Level {
 				boardCase.draw();
 			}
 		}
-		Canvas.getCanvas().wait(100);
+		Canvas.getCanvas().wait(10);
 		for(BonusEntity bonus : bonuslist) {
 			bonus.draw();
 		}
@@ -73,6 +80,7 @@ public class Level {
 	/**
 	 * Loads the file that contains the level corresponding to the index
 	 * 
+	 * A METTRE A JOUR
 	 */
 	public void changeList() {
 		assert(index > 0) : "Invalid index : Negative.";
@@ -176,11 +184,6 @@ public class Level {
 				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
 				
 				System.out.println("Bonus detected @ " + x + "," + y);
-				/*
-				//Setting the ghost on the right board square
-				if(this.list.get(x).get(y).getBonus()!=null) {
-					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
-				}*/
 				this.list.get(x).get(y).setBonus(new BonusEntity("S", this.index, y*10,x*10));;
 			}
 			
@@ -199,9 +202,6 @@ public class Level {
 				System.out.println("Ghost detected @ " + x + "," + y);
 				
 				//Setting the ghost on the right board square
-				// A RETRAVAILLER
-				// NECESSITE DE LA BONUS ENTITY?
-				// PASSER A NULL, CHANGER CONSTRUCTEUR DE BONUSENTITY
 				if(this.list.get(x).get(y).getBonus()!=null) {
 					this.list.get(x).get(y).setBonus(null);
 				}
@@ -212,29 +212,45 @@ public class Level {
 		System.out.println(list.size());
 	}
 	
+	/**
+	 * 
+	 */
 	public void computeNextFrame() {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateGhost() {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void updatePacMan() {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int checkEndGame() {
 		return 0; 
 	}
 	
+	/**
+	 * Point of entry
+	 * 
+	 * @param args Automatically sent by the system when the program is called
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Level board = new Level();
 		Canvas.getCanvas().wait(50);
-		board.drawList();
-		
-		
+		board.drawList();		
 	}
 
 }

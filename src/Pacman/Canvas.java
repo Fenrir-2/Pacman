@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
 /**
  * Canvas is a class to allow for simple graphical drawing on a canvas.
  *
- * @author Pascale Launay
+ * @author Pascale Launay, Nicolas FONNIER, Henri GLEVEAU
  */
 public class Canvas {
 
@@ -29,12 +29,12 @@ public class Canvas {
     /**
      * The canvas initial width
      */
-    public static final int WIDTH = 1500;
+    public static final int WIDTH = 270;
     
     /**
      * The canvas initial height
      */
-    public static final int HEIGHT = 500;
+    public static final int HEIGHT = 290;
     
     /**
      * The canvas initial background color
@@ -140,16 +140,18 @@ public class Canvas {
         try {
             Thread.sleep(milliseconds);
         } catch (Exception e) {
+        	System.out.println("Error occured during Thread.sleep");
+        	e.printStackTrace();
             // ignoring exception at the moment
         }
     }
 
     /**
-     * Draw a given shape onto the canvas.
+     * Draw a given image onto the canvas.
      *
-     * @param referenceObject an object to define identity for this shape
-     * @param color the color of the shape
-     * @param shape the shape object to be drawn on the canvas
+     * @param image the image to draw
+     * @param x the x location of the image
+     * @param y the y location of the image
      */
     public void draw(BufferedImage image, int x, int y) {
         this.objects.remove(image);   // just in case it was already there
@@ -229,9 +231,10 @@ public class Canvas {
      * Canvas frame. This is essentially a JPanel with added capability to
      * refresh the shapes drawn on it.
      */
-    private class CanvasPane extends JPanel {
+    @SuppressWarnings("serial")
+	private class CanvasPane extends JPanel {
 
-        public void paint(Graphics g, BufferedImage image) {
+		public void paint(Graphics g, BufferedImage image) {
             super.paint(g);
             g.setColor(BACKGROUND);
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -248,17 +251,8 @@ public class Canvas {
 
         private Shape shape; // the shape if it exists
         private String text; // the text if it exists
-        private int x, y;    // the text location
         private Color color; // the text or shape color
 
-	/**
-	 * Initialize a {@link ColoredShape} instance composed of a
-	 * shape and a color
-	 */
-        public ColoredShape(Shape shape, Color color) {
-            this.shape = shape;
-            this.color = color;
-        }
 
         /**
 	 * Initialize a {@link ColoredShape} instance composed of a
@@ -266,8 +260,6 @@ public class Canvas {
 	 */
         public ColoredShape(String text, int x, int y, Color color) {
             this.text = text;
-            this.x = x;
-            this.y = y;
             this.color = color;
         }
 

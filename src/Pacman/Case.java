@@ -5,6 +5,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Short class desciption
+ * 
+ * @author Nicolas FONNIER, Henri GLEVEAU
+ *
+ */
 public class Case extends Drawable{
 	
 	protected boolean walkable;
@@ -12,6 +18,16 @@ public class Case extends Drawable{
 	protected Pac_Man pacman;
 	protected Fantome fantome;
 	
+	/**
+	 * To Do
+	 * 
+	 * @param walkable
+	 * @param bonus
+	 * @param pacman
+	 * @param fantome
+	 * @param x
+	 * @param y
+	 */
 	public Case(boolean walkable, BonusEntity bonus, Pac_Man pacman, Fantome fantome, int x, int y) {
 		super(x, y);
 		
