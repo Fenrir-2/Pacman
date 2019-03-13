@@ -39,11 +39,35 @@ public class Level {
 	 * Runs through the list and draws each square.
 	 */
 	public void drawList() {
+		Pac_Man pacman = null;
+		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
+		ArrayList<BonusEntity> bonuslist = new ArrayList<BonusEntity>();
+		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
+				if(boardCase.getPacMan() != null) {
+					pacman = boardCase.getPacMan();
+				}
+				if(boardCase.getFantome() != null) {
+					ghostlist.add(boardCase.getFantome());
+				}
+				if(boardCase.getBonus() != null) {
+					bonuslist.add(boardCase.getBonus());
+				}
+				
 				boardCase.draw();
 			}
 		}
+		Canvas.getCanvas().wait(100);
+		for(BonusEntity bonus : bonuslist) {
+			bonus.draw();
+		}
+		Canvas.getCanvas().wait(10);
+		for(Fantome fantome : ghostlist) {
+			fantome.draw();
+		}
+		Canvas.getCanvas().wait(10);
+		pacman.draw();
 	}
 	
 	/**
@@ -86,7 +110,9 @@ public class Level {
 		
 		//File parsing
 		String[] lines = fileText.split("\n");
-		
+		int i = 0;
+		int j = 0;
+		int z = 0;
 		for(String line : lines) {
 			//Checking if line definition
 			if(line.toCharArray()[0] == 'f' || line.toCharArray()[0] == 't') {
@@ -95,12 +121,21 @@ public class Level {
 				for(char caseDef : line.toCharArray()) {
 					//Checking in case garbage was slipped inside a line def
 					if(caseDef == 'f' || caseDef == 't') {
-						caseLine.add(new Case(caseDef == 't', null, null, null));
+						caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
+            if(caseLine.get(z).isWalkable()) {
+						  caseLine.get(z).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+					  }
 					}
+          z=z+1;
+					i=i+10;
 				}
+				z=0;
 				list.add(caseLine);
 				System.out.println(caseLine.size());
+				i=0;
+				j=j+10;
 			}
+			
 			
 			//Checking if Pacman location
 			if(line.toCharArray()[0] == 'P') {
@@ -117,7 +152,13 @@ public class Level {
 				System.out.println("Pacman detected @ " + x + "," + y);
 				
 				//Setting the Pacman on the right board square
-				this.list.get(x).get(y).setPacMan(new Pac_Man());
+				
+				// A RETRAVAILLER
+				// NECESSITE DE LA BONUS ENTITY?
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+				}
+				this.list.get(x).get(y).setPacMan(new Pac_Man(y*10,x*10));
 			}
 			
 			//Checking if bonus location
@@ -135,7 +176,10 @@ public class Level {
 				System.out.println("Bonus detected @ " + x + "," + y);
 				
 				//Setting the ghost on the right board square
-				this.list.get(x).get(y).setBonus(new BonusEntity(this.index));;
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+				}
+				this.list.get(x).get(y).setBonus(new BonusEntity("S", this.index, y*10,x*10));;
 			}
 			
 			//Checking if ghost location
@@ -153,9 +197,31 @@ public class Level {
 				System.out.println("Ghost detected @ " + x + "," + y);
 				
 				//Setting the ghost on the right board square
-				this.list.get(x).get(y).setFantome(new Fantome());;
+				// A RETRAVAILLER
+				// NECESSITE DE LA BONUS ENTITY?
+				// PASSER A NULL, CHANGER CONSTRUCTEUR DE BONUSENTITY
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+				}
+				this.list.get(x).get(y).setFantome(new Fantome(y*10,x*10));;
 			}
 		}
+		
+		// A VIRER
+		/*
+		i=0;
+		j=0;
+		for(ArrayList<Case> listCase : list) {
+			for(Case square : listCase){
+				if(square.isWalkable());
+					square.setBonus(new BonusEntity("s", this.index, i-10, j-10));
+				i=i+10;
+			}
+			i=0;
+			j=j+10;
+		}
+		*/
+		
 		
 		System.out.println(list.size());
 	}
@@ -179,6 +245,10 @@ public class Level {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Level board = new Level();
+		Canvas.getCanvas().wait(50);
+		board.drawList();
+		
+		
 	}
 
 }

@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +29,7 @@ public class Canvas {
     /**
      * The canvas initial width
      */
-    public static final int WIDTH = 500;
+    public static final int WIDTH = 1500;
     
     /**
      * The canvas initial height
@@ -150,10 +151,10 @@ public class Canvas {
      * @param color the color of the shape
      * @param shape the shape object to be drawn on the canvas
      */
-    public void draw(Object referenceObject, Color color, Shape shape) {
-        this.objects.remove(referenceObject);   // just in case it was already there
-        this.objects.add(referenceObject);      // add at the end
-        this.shapes.put(referenceObject, new ColoredShape(shape, color));
+    public void draw(BufferedImage image, int x, int y) {
+        this.objects.remove(image);   // just in case it was already there
+        this.canvas.getGraphics().drawImage(image, x, y, null);    // add at the end
+       
     }
 
     /**
@@ -230,13 +231,12 @@ public class Canvas {
      */
     private class CanvasPane extends JPanel {
 
-        @Override
-        public void paint(Graphics g) {
+        public void paint(Graphics g, BufferedImage image) {
             super.paint(g);
             g.setColor(BACKGROUND);
             g.fillRect(0, 0, getWidth(), getHeight());
             for (Object shape : objects) {
-                shapes.get(shape).draw((Graphics2D) g);
+                shapes.get(shape).draw((Graphics2D) g, image);
             }
         }
     }
@@ -276,12 +276,12 @@ public class Canvas {
          *
          * @param graphic AWT graphic object
          */
-        public void draw(Graphics2D graphic) {
+        public void draw(Graphics2D graphic, BufferedImage image) {
             graphic.setColor(color);
             if (shape != null) {
                 graphic.fill(shape);
             } else if (text != null) {
-                graphic.drawString(text, x, y);
+                graphic.drawImage(image, null, 0,0);
             }
         }
     }

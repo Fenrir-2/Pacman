@@ -2,7 +2,8 @@ package Pacman;
 
 public class Entity extends Drawable{
 	
-	public Entity() {
+	public Entity(int x, int y) {
+		super(x, y);
 		
 	}
 	
@@ -12,7 +13,7 @@ public class Entity extends Drawable{
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
+		
 		
 	}	
 
