@@ -39,13 +39,35 @@ public class Level {
 	 * Runs through the list and draws each square.
 	 */
 	public void drawList() {
+		Pac_Man pacman = null;
+		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
+		ArrayList<BonusEntity> bonuslist = new ArrayList<BonusEntity>();
 		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
-				System.out.println(boardCase);
+				if(boardCase.getPacMan() != null) {
+					pacman = boardCase.getPacMan();
+				}
+				if(boardCase.getFantome() != null) {
+					ghostlist.add(boardCase.getFantome());
+				}
+				if(boardCase.getBonus() != null) {
+					bonuslist.add(boardCase.getBonus());
+				}
+				
 				boardCase.draw();
 			}
 		}
+		Canvas.getCanvas().wait(100);
+		for(BonusEntity bonus : bonuslist) {
+			bonus.draw();
+		}
+		Canvas.getCanvas().wait(10);
+		for(Fantome fantome : ghostlist) {
+			fantome.draw();
+		}
+		Canvas.getCanvas().wait(10);
+		pacman.draw();
 	}
 	
 	/**
@@ -90,6 +112,7 @@ public class Level {
 		String[] lines = fileText.split("\n");
 		int i = 0;
 		int j = 0;
+		int z = 0;
 		for(String line : lines) {
 			//Checking if line definition
 			if(line.toCharArray()[0] == 'f' || line.toCharArray()[0] == 't') {
@@ -97,14 +120,98 @@ public class Level {
 				//Allows to work on each character separately
 				for(char caseDef : line.toCharArray()) {
 					caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
+					if(caseLine.get(z).isWalkable()) {
+						caseLine.get(z).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+					}
+					z=z+1;
 					i=i+10;
 				}
+				z=0;
 				list.add(caseLine);
 				System.out.println(caseLine.size());
+				i=0;
+				j=j+10;
+			}
+			
+			
+			//Checking if Pacman location
+			if(line.toCharArray()[0] == 'P') {
+				//Getting the X and Y location of Pacman
+				String[] pacLocLine = line.split(" ");
+				int x = Integer.parseInt(pacLocLine[1].trim());
+				int y = Integer.parseInt(pacLocLine[2].trim());
+				
+				assert(x > 0) : "X location of Pacman negative";
+				assert(y > 0) : "Y location of Pacman negative";
+				assert(x < this.list.size()) : "X location of Pacman greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of Pacman greater than board maximum";
+				
+				System.out.println("Pacman detected @ " + x + "," + y);
+				
+				//Setting the Pacman on the right board square
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+				}
+				this.list.get(x).get(y).setPacMan(new Pac_Man(y*10,x*10));
+			}
+			
+			//Checking if bonus location
+			if(line.toCharArray()[0] == 'S') {
+				//Getting the X and Y location of the ghost
+				String[] bonusLocLine = line.split(" ");
+				int x = Integer.parseInt(bonusLocLine[1].trim());
+				int y = Integer.parseInt(bonusLocLine[2].trim());
+				
+				assert(x > 0) : "X location of bonus negative";
+				assert(y > 0) : "Y location of bonus negative";
+				assert(x < this.list.size()) : "X location of bonus greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
+				
+				System.out.println("Bonus detected @ " + x + "," + y);
+				
+				//Setting the ghost on the right board square
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+				}
+				this.list.get(x).get(y).setBonus(new BonusEntity("S", this.index, y*10,x*10));;
+			}
+			
+			//Checking if ghost location
+			if(line.toCharArray()[0] == 'F') {
+				//Getting the X and Y location of the ghost
+				String[] ghostLocLine = line.split(" ");
+				int x = Integer.parseInt(ghostLocLine[1].trim());
+				int y = Integer.parseInt(ghostLocLine[2].trim());
+				
+				assert(x > 0) : "X location of ghost negative";
+				assert(y > 0) : "Y location of ghost negative";
+				assert(x < this.list.size()) : "X location of ghost greater than board maximum";
+				assert(y >  this.list.get(0).size()) : "Y location of ghost greater than board maximum";
+				
+				System.out.println("Ghost detected @ " + x + "," + y);
+				
+				//Setting the ghost on the right board square
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+				}
+				this.list.get(x).get(y).setFantome(new Fantome(y*10,x*10));;
+			}
+				
+		}
+		/*
+		i=0;
+		j=0;
+		for(ArrayList<Case> listCase : list) {
+			for(Case square : listCase){
+				if(square.isWalkable());
+					square.setBonus(new BonusEntity("s", this.index, i-10, j-10));
+				i=i+10;
 			}
 			i=0;
 			j=j+10;
 		}
+		*/
+		
 		
 		System.out.println(list.size());
 	}
@@ -128,7 +235,7 @@ public class Level {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Level board = new Level();
-		board.changeList();
+		Canvas.getCanvas().wait(50);
 		board.drawList();
 		
 		

@@ -67,7 +67,7 @@ public class Case extends Drawable{
 	}
 	
 	public void draw() {
-		
+		/*
 		if(this.pacman != null){
 			this.pacman.draw();
 		}
@@ -79,7 +79,7 @@ public class Case extends Drawable{
 		if(this.bonus != null) {
 			this.bonus.draw();
 		}
-		
+		*/
 		Canvas canvas = Canvas.getCanvas();
         canvas.draw(this.imageSprite, this.posHor, this.posVer);
 		
