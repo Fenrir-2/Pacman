@@ -119,11 +119,14 @@ public class Level {
 				ArrayList<Case> caseLine = new ArrayList<Case>();
 				//Allows to work on each character separately
 				for(char caseDef : line.toCharArray()) {
-					caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
-					if(caseLine.get(z).isWalkable()) {
-						caseLine.get(z).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+					//Checking in case garbage was slipped inside a line def
+					if(caseDef == 'f' || caseDef == 't') {
+						caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
+            if(caseLine.get(z).isWalkable()) {
+						  caseLine.get(z).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+					  }
 					}
-					z=z+1;
+          z=z+1;
 					i=i+10;
 				}
 				z=0;
@@ -149,6 +152,9 @@ public class Level {
 				System.out.println("Pacman detected @ " + x + "," + y);
 				
 				//Setting the Pacman on the right board square
+				
+				// A RETRAVAILLER
+				// NECESSITE DE LA BONUS ENTITY?
 				if(this.list.get(x).get(y).getBonus()!=null) {
 					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
 				}
@@ -191,13 +197,17 @@ public class Level {
 				System.out.println("Ghost detected @ " + x + "," + y);
 				
 				//Setting the ghost on the right board square
+				// A RETRAVAILLER
+				// NECESSITE DE LA BONUS ENTITY?
+				// PASSER A NULL, CHANGER CONSTRUCTEUR DE BONUSENTITY
 				if(this.list.get(x).get(y).getBonus()!=null) {
 					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
 				}
 				this.list.get(x).get(y).setFantome(new Fantome(y*10,x*10));;
 			}
-				
 		}
+		
+		// A VIRER
 		/*
 		i=0;
 		j=0;

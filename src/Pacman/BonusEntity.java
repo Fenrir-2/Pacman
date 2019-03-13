@@ -10,7 +10,7 @@ public class BonusEntity extends MoveableEntity{
 	private int Score;
 	private String type;
 	
-	public BonusEntity(String type, int level, int x, int y) {
+  public BonusEntity(String type, int level, int x, int y) {
 		super (x, y);
 		String filename = "bonus_";
 		if(type=="s") {
@@ -27,9 +27,7 @@ public class BonusEntity extends MoveableEntity{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
+		}		
 	}
 	
 	public void draw() {
