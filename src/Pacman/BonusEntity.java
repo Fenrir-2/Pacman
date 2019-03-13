@@ -7,10 +7,10 @@ import javax.imageio.ImageIO;
 
 public class BonusEntity extends MoveableEntity{
 	
-	private int Score;
-	private String type;
+	protected int Score;
+	protected String type;
 	
-  public BonusEntity(String type, int level, int x, int y) {
+	public BonusEntity(String type, int level, int x, int y) {
 		super (x, y);
 		String filename = "bonus_";
 		if(type=="s") {
@@ -18,8 +18,8 @@ public class BonusEntity extends MoveableEntity{
 		}else if(type=="S"){
 			filename += "super.png";
 		}
-		else if(type=="") {
-			filename = "case_walkable.png";
+		else {
+			throw new IllegalArgumentException("Unrecognized type: " + type);
 		}
 		
 		try {

@@ -112,24 +112,29 @@ public class Level {
 		String[] lines = fileText.split("\n");
 		int i = 0;
 		int j = 0;
-		int z = 0;
+		int caseNbOnLine = 0;
 		for(String line : lines) {
 			//Checking if line definition
 			if(line.toCharArray()[0] == 'f' || line.toCharArray()[0] == 't') {
+				
 				ArrayList<Case> caseLine = new ArrayList<Case>();
 				//Allows to work on each character separately
 				for(char caseDef : line.toCharArray()) {
+					
 					//Checking in case garbage was slipped inside a line def
 					if(caseDef == 'f' || caseDef == 't') {
+						
 						caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
-            if(caseLine.get(z).isWalkable()) {
-						  caseLine.get(z).setBonus(new BonusEntity("s", this.index, i-11, j-9));
-					  }
+						if(caseLine.get(caseNbOnLine).isWalkable()) {
+							//If the square is walkable, set a simple bonus on the square
+							caseLine.get(caseNbOnLine).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+						}
 					}
-          z=z+1;
-					i=i+10;
+					caseNbOnLine++;
+					i+=10;
 				}
-				z=0;
+				
+				caseNbOnLine=0;
 				list.add(caseLine);
 				System.out.println(caseLine.size());
 				i=0;
@@ -152,11 +157,8 @@ public class Level {
 				System.out.println("Pacman detected @ " + x + "," + y);
 				
 				//Setting the Pacman on the right board square
-				
-				// A RETRAVAILLER
-				// NECESSITE DE LA BONUS ENTITY?
 				if(this.list.get(x).get(y).getBonus()!=null) {
-					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+					this.list.get(x).get(y).setBonus(null);
 				}
 				this.list.get(x).get(y).setPacMan(new Pac_Man(y*10,x*10));
 			}
@@ -174,11 +176,11 @@ public class Level {
 				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
 				
 				System.out.println("Bonus detected @ " + x + "," + y);
-				
+				/*
 				//Setting the ghost on the right board square
 				if(this.list.get(x).get(y).getBonus()!=null) {
 					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
-				}
+				}*/
 				this.list.get(x).get(y).setBonus(new BonusEntity("S", this.index, y*10,x*10));;
 			}
 			
@@ -201,28 +203,12 @@ public class Level {
 				// NECESSITE DE LA BONUS ENTITY?
 				// PASSER A NULL, CHANGER CONSTRUCTEUR DE BONUSENTITY
 				if(this.list.get(x).get(y).getBonus()!=null) {
-					this.list.get(x).get(y).setBonus(new BonusEntity("", this.index, y*10, x*10));
+					this.list.get(x).get(y).setBonus(null);
 				}
 				this.list.get(x).get(y).setFantome(new Fantome(y*10,x*10));;
 			}
 		}
-		
-		// A VIRER
-		/*
-		i=0;
-		j=0;
-		for(ArrayList<Case> listCase : list) {
-			for(Case square : listCase){
-				if(square.isWalkable());
-					square.setBonus(new BonusEntity("s", this.index, i-10, j-10));
-				i=i+10;
-			}
-			i=0;
-			j=j+10;
-		}
-		*/
-		
-		
+				
 		System.out.println(list.size());
 	}
 	
