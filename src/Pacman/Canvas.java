@@ -13,8 +13,13 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+/**
+ * TODO: ADD A LAYOUT MANAGER TO FIX THE SCORE
+ */
 
 /**
  * Canvas is a class to allow for simple graphical drawing on a canvas.
@@ -29,12 +34,12 @@ public class Canvas {
     /**
      * The canvas initial width
      */
-    public static final int WIDTH = 270;
+    public static final int WIDTH = 800;
     
     /**
      * The canvas initial height
      */
-    public static final int HEIGHT = 290;
+    public static final int HEIGHT = 500;
     
     /**
      * The canvas initial background color
@@ -94,6 +99,11 @@ public class Canvas {
     private boolean upPressed, downPressed, leftPressed, rightPressed;
 
     /**
+     * The score label
+     */
+    private JLabel scoreLabel;
+
+    /**
      * Create a Canvas.
      */
     private Canvas() {
@@ -107,6 +117,11 @@ public class Canvas {
         this.frame.setContentPane(this.canvas);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocation(30, 30);
+        
+        this.scoreLabel = new JLabel("Score: ");  
+        this.scoreLabel.setVisible(true);
+        this.scoreLabel.setLocation(310, 0);
+        this.canvas.add(scoreLabel);
 
         this.frame.pack();
 
@@ -128,6 +143,36 @@ public class Canvas {
             }
         });
     }
+    
+    /**
+     * 
+     * @param e
+     */
+    //TODO:UTILE?
+    public void add(JLabel e) {
+		e.setLocation(310, 0);
+		e.setVisible(true);
+		this.frame.add(e);    
+    }
+
+    
+    /**
+     * 
+     * @return
+     */
+    public JLabel getScoreLabel() {
+		return this.scoreLabel;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    //TODO:UTILE?
+    public JFrame getFrame() {
+		return this.frame;
+    }
+
 
     /**
      * Wait for a specified number of milliseconds before finishing. This

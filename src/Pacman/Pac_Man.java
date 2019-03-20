@@ -48,6 +48,7 @@ public class Pac_Man extends MoveableEntity{
 	 */
 	public void perdVie() {
 		this.nbVies = this.nbVies-1;
+		assert(this.nbVies > 0) : "Number of lives below zero";
 	}
 	
 	/**
@@ -55,8 +56,17 @@ public class Pac_Man extends MoveableEntity{
 	 * @param state
 	 * @return
 	 */
+	//C'est quoi ce return de mes couilles? Wllh j'étais dead
 	public boolean setSuperMode(boolean state) {
 		this.SuperMode = state;
+		return this.SuperMode;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean getSuperMode() {
 		return this.SuperMode;
 	}
 	

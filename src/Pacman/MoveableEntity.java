@@ -6,7 +6,7 @@ package Pacman;
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
  */
-public class MoveableEntity extends Entity{
+public abstract class MoveableEntity extends Entity{
 	
 	/**
 	 * Constructor for the MoveableEntity 

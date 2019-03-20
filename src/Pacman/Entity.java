@@ -6,7 +6,7 @@ package Pacman;
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
  */
-public class Entity extends Drawable{
+public abstract class Entity extends Drawable{
 	
 	/**
 	 * 
@@ -19,11 +19,16 @@ public class Entity extends Drawable{
 	}
 	
 	/**
+	 * Vérifie si l'entité actuelle est en collision avec l'entité e
 	 * 
-	 * @param e
-	 * @return
+	 * @param e L'entité à vérifier
+	 * 
+	 * @return Vrai si les coordonnées des 2 entités sont identiques
 	 */
 	public boolean checkCollision(Entity e) {
+		if(e.posHor == this.posHor && e.posVer == this.posVer)
+			return true;
+
 		return false;
 	}
 	
@@ -31,9 +36,6 @@ public class Entity extends Drawable{
 	 * 
 	 */
 	@Override
-	public void draw() {
-		
-		
-	}	
+	public abstract void draw();
 
 }

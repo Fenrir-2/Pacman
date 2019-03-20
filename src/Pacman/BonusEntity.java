@@ -52,7 +52,10 @@ public class BonusEntity extends MoveableEntity{
 	
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();
-        canvas.draw(this.imageSprite, this.posHor, this.posVer);
+		if(this.imageSprite != null) {
+			canvas.draw(this.imageSprite, this.posHor, this.posVer);
+		}
+
 	}
 
 }

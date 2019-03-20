@@ -13,13 +13,28 @@ import javax.imageio.ImageIO;
  */
 public class Case extends Drawable{
 	
+	/**
+	 * TODO
+	 */
 	protected boolean walkable;
+	
+	/**
+	 * TODO
+	 */
 	protected BonusEntity bonus;
+	
+	/**
+	 * TODO
+	 */
 	protected Pac_Man pacman;
+	
+	/**
+	 * TODO
+	 */
 	protected Fantome fantome;
 	
 	/**
-	 * To Do
+	 * TODO
 	 * 
 	 * @param walkable
 	 * @param bonus
@@ -77,7 +92,7 @@ public class Case extends Drawable{
 	
 	/**
 	 * Return the Pacman on the square, which should be the only Pacman in the game
-	 * 
+	 * TODO: ADD INVARIANT CHECK?
 	 * @return The Pacman on the square
 	 */
 	public Pac_Man getPacMan() {
