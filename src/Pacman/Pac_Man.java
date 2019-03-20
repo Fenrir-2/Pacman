@@ -26,7 +26,7 @@ public class Pac_Man extends MoveableEntity{
 	/**
 	 * 
 	 */
-	protected int Score = 0;
+	protected int score = 0;
 	
 	/**
 	 * 
@@ -83,7 +83,7 @@ public class Pac_Man extends MoveableEntity{
 	 * @param score
 	 */
 	public void addscore(int score) {
-		this.Score = this.Score+score;
+		this.score = this.score+score;
 	}
 	
 	/**
@@ -92,6 +92,10 @@ public class Pac_Man extends MoveableEntity{
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();
         canvas.draw(this.imageSprite, this.posHor, this.posVer);
+	}
+
+	public int getScore() {
+		return this.score;
 	}
 
 }

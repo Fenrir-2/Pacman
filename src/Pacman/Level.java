@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /**
  * Short class description
@@ -17,7 +19,12 @@ public class Level {
 	/**
 	 * Number of levels
 	 */
-	public static final int MAX_INDEX = 3;
+	protected static final int MAX_INDEX = 3;
+	
+	/**
+	 * The name of the score file
+	 */
+	protected static final String SCORE_FILE = "score.dat"; 
 	
 	/**
 	 * Holds the number of the current level
@@ -30,12 +37,24 @@ public class Level {
 	protected ArrayList<ArrayList<Case>> list; 
 	
 	/**
+	 * Holds a reference to the pacman object
+	 */
+	protected Pac_Man pacman;
+	
+	/**
+	 * Holds a reference to all the ghosts on the board
+	 */
+	protected ArrayList<Fantome> ghostList;
+	
+	/**
 	 * Level constructor
 	 * 
 	 * No param needed
 	 */
 	public Level() {
 		this.list = new ArrayList<ArrayList<Case>>();
+		this.pacman = null;
+		this.ghostList = new ArrayList<Fantome>();
 		index = 1;
 		
 		this.changeList();
@@ -168,7 +187,12 @@ public class Level {
 				if(this.list.get(x).get(y).getBonus()!=null) {
 					this.list.get(x).get(y).setBonus(null);
 				}
-				this.list.get(x).get(y).setPacMan(new Pac_Man(y*10,x*10));
+				
+				//Creating the Pacman we'll keep a reference to for later
+				this.pacman = new Pac_Man(y*10,x*10);
+				
+				//Adding the Pacman to the square
+				this.list.get(x).get(y).setPacMan(this.pacman);
 			}
 			
 			//Checking if bonus location
@@ -202,10 +226,15 @@ public class Level {
 				System.out.println("Ghost detected @ " + x + "," + y);
 				
 				//Setting the ghost on the right board square
-				if(this.list.get(x).get(y).getBonus()!=null) {
+				if(this.list.get(x).get(y).getBonus()!=null)
 					this.list.get(x).get(y).setBonus(null);
-				}
-				this.list.get(x).get(y).setFantome(new Fantome(y*10,x*10));;
+				
+				//Keeping a reference to the new ghost
+				Fantome newGhost = new Fantome(y*10,x*10);
+				this.ghostList.add(newGhost);
+				
+				//Adding it to the board
+				this.list.get(x).get(y).setFantome(newGhost);
 			}
 		}
 				
@@ -366,7 +395,7 @@ public class Level {
 			}
 		}
 		//System.out.println(pacman.Score);
-		int z = pacman.Score;
+		int z = pacman.getScore();
 		String test = String.valueOf(z);
 		Canvas.getCanvas().getScoreLabel().setText("Score : "+test);
 	}
@@ -375,13 +404,11 @@ public class Level {
 	 * 
 	 */
 	public void updateGhost() {
-		Pac_Man pacman = null;
 		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
 		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
 				if(boardCase.getPacMan() != null) {
-					pacman = boardCase.getPacMan();
 				}
 				if(boardCase.getFantome() != null) {
 					ghostlist.add(boardCase.getFantome());
@@ -401,6 +428,38 @@ public class Level {
 		}
 		i=i+1;
 		z=z+10;
+	}
+	
+	/**
+	 * Fetches the score from pacman, and writes it to scores.dat
+	 */
+	public void writeScore() {
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new FileWriter(Level.SCORE_FILE));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//If the writer was correctly setup
+		if(bw != null) {
+			try {
+				bw.write(this.pacman.getScore());
+				bw.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				//Whatever happened, try to close the stream and release the file
+				try {
+					bw.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	/**
