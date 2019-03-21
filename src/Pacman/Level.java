@@ -6,6 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
+/**
+ * Short class description
+ * 
+ * @author Nicolas FONNIER, Henri GLEVEAU
+ *
+ */
 public class Level {
 	
 	/**
@@ -37,18 +43,44 @@ public class Level {
 	
 	/**
 	 * Runs through the list and draws each square.
+	 * Draws, in order: Squares, bonus, ghost, Pacman
 	 */
 	public void drawList() {
+		Pac_Man pacman = null;
+		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
+		ArrayList<BonusEntity> bonuslist = new ArrayList<BonusEntity>();
+		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
+				if(boardCase.getPacMan() != null) {
+					pacman = boardCase.getPacMan();
+				}
+				if(boardCase.getFantome() != null) {
+					ghostlist.add(boardCase.getFantome());
+				}
+				if(boardCase.getBonus() != null) {
+					bonuslist.add(boardCase.getBonus());
+				}
+				
 				boardCase.draw();
 			}
 		}
+		Canvas.getCanvas().wait(10);
+		for(BonusEntity bonus : bonuslist) {
+			bonus.draw();
+		}
+		Canvas.getCanvas().wait(10);
+		for(Fantome fantome : ghostlist) {
+			fantome.draw();
+		}
+		Canvas.getCanvas().wait(10);
+		pacman.draw();
 	}
 	
 	/**
 	 * Loads the file that contains the level corresponding to the index
 	 * 
+	 * A METTRE A JOUR
 	 */
 	public void changeList() {
 		assert(index > 0) : "Invalid index : Negative.";
@@ -86,21 +118,37 @@ public class Level {
 		
 		//File parsing
 		String[] lines = fileText.split("\n");
-		
+		int i = 0;
+		int j = 0;
+		int caseNbOnLine = 0;
 		for(String line : lines) {
 			//Checking if line definition
 			if(line.toCharArray()[0] == 'f' || line.toCharArray()[0] == 't') {
+				
 				ArrayList<Case> caseLine = new ArrayList<Case>();
 				//Allows to work on each character separately
 				for(char caseDef : line.toCharArray()) {
+					
 					//Checking in case garbage was slipped inside a line def
 					if(caseDef == 'f' || caseDef == 't') {
-						caseLine.add(new Case(caseDef == 't', null, null, null));
+						
+						caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
+						if(caseLine.get(caseNbOnLine).isWalkable()) {
+							//If the square is walkable, set a simple bonus on the square
+							caseLine.get(caseNbOnLine).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+						}
 					}
+					caseNbOnLine++;
+					i+=10;
 				}
+				
+				caseNbOnLine=0;
 				list.add(caseLine);
 				System.out.println(caseLine.size());
+				i=0;
+				j=j+10;
 			}
+			
 			
 			//Checking if Pacman location
 			if(line.toCharArray()[0] == 'P') {
@@ -117,7 +165,10 @@ public class Level {
 				System.out.println("Pacman detected @ " + x + "," + y);
 				
 				//Setting the Pacman on the right board square
-				this.list.get(x).get(y).setPacMan(new Pac_Man());
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(null);
+				}
+				this.list.get(x).get(y).setPacMan(new Pac_Man(y*10,x*10));
 			}
 			
 			//Checking if bonus location
@@ -133,9 +184,7 @@ public class Level {
 				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
 				
 				System.out.println("Bonus detected @ " + x + "," + y);
-				
-				//Setting the ghost on the right board square
-				this.list.get(x).get(y).setBonus(new BonusEntity(this.index));;
+				this.list.get(x).get(y).setBonus(new BonusEntity("S", this.index, y*10,x*10));;
 			}
 			
 			//Checking if ghost location
@@ -153,32 +202,55 @@ public class Level {
 				System.out.println("Ghost detected @ " + x + "," + y);
 				
 				//Setting the ghost on the right board square
-				this.list.get(x).get(y).setFantome(new Fantome());;
+				if(this.list.get(x).get(y).getBonus()!=null) {
+					this.list.get(x).get(y).setBonus(null);
+				}
+				this.list.get(x).get(y).setFantome(new Fantome(y*10,x*10));;
 			}
 		}
-		
+				
 		System.out.println(list.size());
 	}
 	
+	/**
+	 * 
+	 */
 	public void computeNextFrame() {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateGhost() {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void updatePacMan() {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int checkEndGame() {
 		return 0; 
 	}
 	
+	/**
+	 * Point of entry
+	 * 
+	 * @param args Automatically sent by the system when the program is called
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Level board = new Level();
+		Canvas.getCanvas().wait(50);
+		board.drawList();		
 	}
 
 }
