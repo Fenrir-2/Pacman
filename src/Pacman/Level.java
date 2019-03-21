@@ -47,6 +47,12 @@ public class Level {
 	protected ArrayList<Fantome> ghostList;
 	
 	/**
+	 * Holds a reference to all the bonus entities on the board
+	 * Allows for fast checking of end game state
+	 */
+	protected ArrayList<BonusEntity> bonusList;
+	
+	/**
 	 * Level constructor
 	 * 
 	 * No param needed
@@ -55,6 +61,7 @@ public class Level {
 		this.list = new ArrayList<ArrayList<Case>>();
 		this.pacman = null;
 		this.ghostList = new ArrayList<Fantome>();
+		this.bonusList = new ArrayList<BonusEntity>();
 		index = 1;
 		
 		this.changeList();
@@ -64,46 +71,35 @@ public class Level {
 	 * Runs through the list and draws each square.
 	 * Draws, in order: Squares, bonus, ghost, Pacman
 	 */
-	public void drawList() {
-		Pac_Man pacman = null;
-		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
-		ArrayList<BonusEntity> bonuslist = new ArrayList<BonusEntity>();
-		
+	public void drawList() {		
+		//Drawing all the board squares		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
-				if(boardCase.getPacMan() != null) {
-					pacman = boardCase.getPacMan();
-				}
-				if(boardCase.getFantome() != null) {
-					ghostlist.add(boardCase.getFantome());
-				}
-				if(boardCase.getBonus() != null) {
-					bonuslist.add(boardCase.getBonus());
-				}
-				
 				boardCase.draw();
 			}
 		}
-		Canvas.getCanvas().wait(20);
-		for(BonusEntity bonus : bonuslist) {
+		//Drawing every bonus entity
+		for(BonusEntity bonus : bonusList) {
 			bonus.draw();
 		}
-		Canvas.getCanvas().wait(100);
-		for(Fantome fantome : ghostlist) {
+		
+		//Drawing every ghost
+		for(Fantome fantome : ghostList) {
 			fantome.draw();
 		}
-		//Canvas.getCanvas().wait(10);
+		
+		//Drawing PacMan
 		pacman.draw();
 	}
 	
 	/**
 	 * Loads the file that contains the level corresponding to the index
 	 * 
-	 * A METTRE A JOUR
 	 */
 	public void changeList() {
 		assert(index > 0) : "Invalid index : Negative.";
 		assert(index < MAX_INDEX) : "Invalid index : Greater than MAX_INDEX";
+		
 		//Loads the file, then puts it in the fileText string
 		InputStreamReader fileInput = null;
 		try {
@@ -154,7 +150,9 @@ public class Level {
 						caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
 						if(caseLine.get(caseNbOnLine).isWalkable()) {
 							//If the square is walkable, set a simple bonus on the square
-							caseLine.get(caseNbOnLine).setBonus(new BonusEntity("s", this.index, i-11, j-9));
+							BonusEntity newBonus = new BonusEntity("s", this.index, i-11, j-9);
+							this.bonusList.add(newBonus);
+							caseLine.get(caseNbOnLine).setBonus(newBonus);
 						}
 					}
 					caseNbOnLine++;
@@ -208,7 +206,9 @@ public class Level {
 				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
 				
 				System.out.println("Bonus detected @ " + x + "," + y);
-				this.list.get(x).get(y).setBonus(new BonusEntity("S", this.index, y*10,x*10));;
+				BonusEntity newBonus = new BonusEntity("S", this.index, y*10,x*10);
+				this.bonusList.add(newBonus);
+				this.list.get(x).get(y).setBonus(newBonus);
 			}
 			
 			//Checking if ghost location
@@ -246,25 +246,10 @@ public class Level {
 	 */
 	//TODO : A Reorganiser en découpant dans les bonnes fonctions et en utilisant les bonnes méthodes 
 	public void computeNextFrame() {
-		boolean gauche = Canvas.getCanvas().isLeftPressed();
-		boolean droite = Canvas.getCanvas().isRightPressed();
-		boolean up = Canvas.getCanvas().isUpPressed();
-		boolean down = Canvas.getCanvas().isDownPressed();
 		
-		Pac_Man pacman = null;
-		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
-		ArrayList<BonusEntity> bonuslist = new ArrayList<BonusEntity>();
 		
-		//Getting all the ghosts
-		for(ArrayList<Case> caseList : list) {
-			for(Case boardCase : caseList) {
-				if(boardCase.getFantome() != null) {
-					ghostlist.add(boardCase.getFantome());
-				}
-			}
-		}
-		
-		for (Fantome ghost : ghostlist) {
+		//TODO: A METTRE DANS UPDATEGHOST
+		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
 			switch(deplacement) {
 				case 1:
@@ -328,76 +313,18 @@ public class Level {
 				}
 			
 			}
-		
-		int i=0;
-		int j=0;
+		/*
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
 				if(boardCase.getPacMan() != null) {
 					pacman = boardCase.getPacMan();
-					if(gauche) {
-						int x = (pacman.posHor/10)-1;
-						int y = pacman.posVer/10;
-						if(this.list.get(y).get(x).isWalkable()) {
-							this.list.get(y).get(x+1).draw();
-							pacman.posHor -= 10;
-							if(this.list.get(y).get(x).getBonus()!=null) {
-								pacman.addscore(10);
-								this.list.get(y).get(x).setBonus(null);
-							}
-							pacman.draw();
-						}
-					}
-					if(droite) {
-						int x = (pacman.posHor/10)+1;
-						int y = pacman.posVer/10;
-						if(this.list.get(y).get(x).isWalkable()) {
-							this.list.get(y).get(x-1).draw();
-							
-							pacman.posHor += 10;
-							if(this.list.get(y).get(x).getBonus()!=null) {
-								pacman.addscore(10);
-								this.list.get(y).get(x).setBonus(null);
-							}
-							pacman.draw();
-						}
-					}
-					if(up) {
-						int  x = (pacman.posHor/10);
-						int y = (pacman.posVer/10)-1;
-						if(this.list.get(y).get(x).isWalkable()) {
-							this.list.get(y+1).get(x).draw();
-							
-							pacman.posVer -= 10;
-							if(this.list.get(y).get(x).getBonus()!=null) {
-								pacman.addscore(10);
-								this.list.get(y).get(x).setBonus(null);
-							}
-							pacman.draw();
-						}
-					}
-					if(down) {
-						int x = (pacman.posHor/10);
-						int y = (pacman.posVer/10)+1;
-						if(this.list.get(y).get(x).isWalkable()) {
-							this.list.get(y-1).get(x).draw();
-							
-							pacman.posVer += 10;
-							if(this.list.get(y).get(x).getBonus()!=null) {
-								pacman.addscore(10);
-								this.list.get(y).get(x).setBonus(null);
-							}
-							pacman.draw();
-						}
-					}
+					
 				}
 				
 			}
-		}
-		//System.out.println(pacman.Score);
-		int z = pacman.getScore();
-		String test = String.valueOf(z);
-		Canvas.getCanvas().getScoreLabel().setText("Score : "+test);
+		}*/
+		//Setting the label to the correct score
+		Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
 	}
 	
 	/**
@@ -431,12 +358,107 @@ public class Level {
 	}
 	
 	/**
+	 * 
+	 */
+	public void updatePacMan() {
+		boolean gauche = Canvas.getCanvas().isLeftPressed();
+		boolean droite = Canvas.getCanvas().isRightPressed();
+		boolean up = Canvas.getCanvas().isUpPressed();
+		boolean down = Canvas.getCanvas().isDownPressed();
+		
+		Case currSquare = this.list.get(pacman.posHor/10).get(pacman.posVer/10);
+		
+		for(Fantome ghost : ghostList) {
+			if(ghost.checkCollision(pacman)) {
+				currSquare.setPacMan(null);
+				
+				pacman.posHor = 130;
+				pacman.posVer = 230;
+				//pacman.draw();
+				pacman.perdVie();
+				
+			}
+		}
+		
+		if(gauche) {
+			int x = (pacman.posHor/10)-1;
+			int y = pacman.posVer/10;
+			if(this.list.get(y).get(x).isWalkable()) {
+				this.list.get(y).get(x+1).draw();
+				pacman.posHor -= 10;
+				if(this.list.get(y).get(x).getBonus()!=null) {
+					pacman.addscore(10);
+					this.list.get(y).get(x).setBonus(null);
+				}
+				pacman.draw();
+			}
+		}
+		if(droite) {
+			int x = (pacman.posHor/10)+1;
+			int y = pacman.posVer/10;
+			if(this.list.get(y).get(x).isWalkable()) {
+				this.list.get(y).get(x-1).draw();
+				
+				pacman.posHor += 10;
+				if(this.list.get(y).get(x).getBonus()!=null) {
+					pacman.addscore(10);
+					this.list.get(y).get(x).setBonus(null);
+				}
+				pacman.draw();
+			}
+		}
+		if(up) {
+			int  x = (pacman.posHor/10);
+			int y = (pacman.posVer/10)-1;
+			if(this.list.get(y).get(x).isWalkable()) {
+				this.list.get(y+1).get(x).draw();
+				
+				pacman.posVer -= 10;
+				if(this.list.get(y).get(x).getBonus()!=null) {
+					pacman.addscore(10);
+					this.list.get(y).get(x).setBonus(null);
+				}
+				pacman.draw();
+			}
+		}
+		if(down) {
+			int x = (pacman.posHor/10);
+			int y = (pacman.posVer/10)+1;
+			if(this.list.get(y).get(x).isWalkable()) {
+				this.list.get(y-1).get(x).draw();
+				
+				pacman.posVer += 10;
+				if(this.list.get(y).get(x).getBonus()!=null) {
+					pacman.addscore(10);
+					this.list.get(y).get(x).setBonus(null);
+				}
+				pacman.draw();
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int checkEndGame() {
+		if(this.pacman.getPacManLives() <= 0)
+			return 1;
+		
+		//Checking if there are any bonuses left. If there are none, change to next level
+		//and return 2
+		
+		
+		return 0; 
+	}
+	
+	/**
 	 * Fetches the score from pacman, and writes it to scores.dat
 	 */
 	public void writeScore() {
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new FileWriter(Level.SCORE_FILE));
+			bw = new BufferedWriter(new FileWriter(Level.SCORE_FILE, true));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -445,7 +467,8 @@ public class Level {
 		//If the writer was correctly setup
 		if(bw != null) {
 			try {
-				bw.write(this.pacman.getScore());
+				System.out.println(this.pacman.getScore());
+				bw.write(Integer.toString(this.pacman.getScore()) + "\n");
 				bw.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -460,47 +483,6 @@ public class Level {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void updatePacMan() {
-		Pac_Man pacman = null;
-		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
-		
-		for(ArrayList<Case> caseList : list) {
-			for(Case boardCase : caseList) {
-				if(boardCase.getPacMan() != null) {
-					pacman = boardCase.getPacMan();
-				}
-				if(boardCase.getFantome() != null) {
-					ghostlist.add(boardCase.getFantome());
-				}
-			}
-		}
-		for(Fantome ghost : ghostlist) {
-			if(ghost.checkCollision(pacman)) {
-				this.list.get(pacman.posHor/10).get(pacman.posVer/10).setPacMan(null);
-				//this.list.get(ghost.posHor/10).get(ghost.posVer/10).setFantome(null);
-				//ghost.posHor = 110;
-				//ghost.posVer = 140;
-				pacman.posHor = 130;
-				pacman.posVer = 230;
-				pacman.draw();
-				//ghost.draw();
-				pacman.perdVie();
-				
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int checkEndGame() {
-		return 0; 
 	}
 	
 	/**
@@ -533,6 +515,8 @@ public class Level {
 			board.updatePacMan();
 			
 		}
+		
+		board.writeScore();
 		
 		System.out.println("Fin du game");
 	}
