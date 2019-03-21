@@ -247,7 +247,12 @@ public class Level {
 	//TODO : A Reorganiser en découpant dans les bonnes fonctions et en utilisant les bonnes méthodes 
 	public void computeNextFrame() {
 		
-		
+		try {
+			Thread.sleep(33);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//TODO: A METTRE DANS UPDATEGHOST
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
@@ -313,16 +318,6 @@ public class Level {
 				}
 			
 			}
-		/*
-		for(ArrayList<Case> caseList : list) {
-			for(Case boardCase : caseList) {
-				if(boardCase.getPacMan() != null) {
-					pacman = boardCase.getPacMan();
-					
-				}
-				
-			}
-		}*/
 		//Setting the label to the correct score
 		Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
 	}
@@ -366,23 +361,31 @@ public class Level {
 		boolean up = Canvas.getCanvas().isUpPressed();
 		boolean down = Canvas.getCanvas().isDownPressed();
 		
-		Case currSquare = this.list.get(pacman.posHor/10).get(pacman.posVer/10);
+		int x = pacman.getX()/10;
+		int y = pacman.getY()/10;
+		
+		Case currSquare = this.list.get(x).get(y);
 		
 		for(Fantome ghost : ghostList) {
 			if(ghost.checkCollision(pacman)) {
+				//Removing the pacman from the current square
 				currSquare.setPacMan(null);
 				
-				pacman.posHor = 130;
-				pacman.posVer = 230;
-				//pacman.draw();
+				//Moving it to the beginning position
+				this.list.get(23).get(13).setPacMan(this.pacman);
+				this.pacman.moveTo(130, 230);
+				
+				//Removing 1 life
 				pacman.perdVie();
 				
+				//Drawing everything back.
+				this.drawList();			
 			}
 		}
 		
 		if(gauche) {
-			int x = (pacman.posHor/10)-1;
-			int y = pacman.posVer/10;
+			x = (pacman.getX()/10)-1;
+			y = pacman.getY()/10;			
 			if(this.list.get(y).get(x).isWalkable()) {
 				this.list.get(y).get(x+1).draw();
 				pacman.posHor -= 10;
@@ -394,8 +397,8 @@ public class Level {
 			}
 		}
 		if(droite) {
-			int x = (pacman.posHor/10)+1;
-			int y = pacman.posVer/10;
+			x = (pacman.posHor/10)+1;
+			y = pacman.posVer/10;
 			if(this.list.get(y).get(x).isWalkable()) {
 				this.list.get(y).get(x-1).draw();
 				
@@ -408,8 +411,8 @@ public class Level {
 			}
 		}
 		if(up) {
-			int  x = (pacman.posHor/10);
-			int y = (pacman.posVer/10)-1;
+			x = (pacman.posHor/10);
+			y = (pacman.posVer/10)-1;
 			if(this.list.get(y).get(x).isWalkable()) {
 				this.list.get(y+1).get(x).draw();
 				
@@ -422,8 +425,8 @@ public class Level {
 			}
 		}
 		if(down) {
-			int x = (pacman.posHor/10);
-			int y = (pacman.posVer/10)+1;
+			x = (pacman.posHor/10);
+			y = (pacman.posVer/10)+1;
 			if(this.list.get(y).get(x).isWalkable()) {
 				this.list.get(y-1).get(x).draw();
 				

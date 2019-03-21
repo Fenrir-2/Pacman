@@ -40,5 +40,31 @@ public abstract class Drawable {
 	 * 
 	 */
 	public abstract void draw();
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void moveTo(int x, int y) {
+		this.posHor = x;
+		this.posVer = y;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getX() {
+		return this.posHor;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getY() {
+		return this.posVer;
+	}
 
 }
