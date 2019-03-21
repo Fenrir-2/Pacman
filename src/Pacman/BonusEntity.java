@@ -52,17 +52,21 @@ public class BonusEntity extends MoveableEntity{
 		}		
 	}
 	
-	public BonusEntity(Bonus bonus, int x, int y) {
+	/**
+	 * 
+	 * @param bonus
+	 * @param x
+	 * @param y
+	 * @param level
+	 */
+	public BonusEntity(Bonus bonus, int level, int x, int y) {
 		super(x, y);
-		String filename = "bonus_";
-		if(bonus==Bonus.GOMME) {
-			filename += "simple.png";
-		}else if(bonus==Bonus.SUPER_GOMME){
-			filename += "super.png";
-		}
-		else {
-			throw new IllegalArgumentException("Unrecognized type: " + type);
-		}
+		
+		String filename = "bonus_" + bonus.getType() + ".png";
+		if(!bonus.checkLevel(level))
+			throw new IllegalArgumentException("BonusEntity Level out of bounds");
+		
+		this.score = bonus.getScore();
 		
 		try {
 			this.imageSprite = ImageIO.read(new File(filename));

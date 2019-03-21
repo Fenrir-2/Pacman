@@ -150,7 +150,7 @@ public class Level {
 						caseLine.add(new Case(caseDef == 't', null, null, null,  i, j));
 						if(caseLine.get(caseNbOnLine).isWalkable()) {
 							//If the square is walkable, set a simple bonus on the square
-							BonusEntity newBonus = new BonusEntity("s", this.index, i-11, j-9);
+							BonusEntity newBonus = new BonusEntity(Bonus.GOMME, this.index, i-11, j-9);
 							this.bonusList.add(newBonus);
 							caseLine.get(caseNbOnLine).setBonus(newBonus);
 						}
@@ -206,7 +206,7 @@ public class Level {
 				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
 				
 				System.out.println("Bonus detected @ " + x + "," + y);
-				BonusEntity newBonus = new BonusEntity("S", this.index, y*10,x*10);
+				BonusEntity newBonus = new BonusEntity(Bonus.SUPER_GOMME, this.index, y*10,x*10);
 				this.bonusList.add(newBonus);
 				this.list.get(x).get(y).setBonus(newBonus);
 			}
@@ -253,7 +253,7 @@ public class Level {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//TODO: A METTRE DANS UPDATEGHOST
+		//TODO: A METTRE DANS UPDATEGHOST + REFACTOR
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
 			switch(deplacement) {
@@ -326,25 +326,17 @@ public class Level {
 	 * 
 	 */
 	public void updateGhost() {
-		ArrayList<Fantome> ghostlist = new ArrayList<Fantome>();
 		
-		for(ArrayList<Case> caseList : list) {
-			for(Case boardCase : caseList) {
-				if(boardCase.getPacMan() != null) {
-				}
-				if(boardCase.getFantome() != null) {
-					ghostlist.add(boardCase.getFantome());
-				}
-			}
-		}
+		//WAT
+		
 		int i = 0;
 		int z = 0;
-		for(Fantome ghost : ghostlist) {
+		for(Fantome ghost : ghostList) {
 			int x = ghost.posHor;
 			int y = ghost.posVer;
 			this.list.get(14).get(11+i).setFantome(ghost);
 			ghost.posHor = 110+z;
-			ghost.posVer  =140;
+			ghost.posVer = 140;
 			ghost.draw();
 			this.list.get(x/10).get(y/10).setFantome(null);
 		}
