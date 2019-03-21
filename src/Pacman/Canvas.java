@@ -112,6 +112,7 @@ public class Canvas {
 
         this.canvas = new CanvasPane();
         this.canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.canvas.setDoubleBuffered(true);
 
         this.frame = new JFrame();
         this.frame.setContentPane(this.canvas);

@@ -82,7 +82,7 @@ public class Pac_Man extends MoveableEntity{
 	 * 
 	 * @param score
 	 */
-	public void addscore(int score) {
+	public void addScore(int score) {
 		this.score = this.score+score;
 	}
 	

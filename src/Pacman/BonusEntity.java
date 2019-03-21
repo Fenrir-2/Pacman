@@ -76,6 +76,17 @@ public class BonusEntity extends MoveableEntity{
 		}		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getScore() {
+		return this.score;
+	}
+	
+	/**
+	 * 
+	 */
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();
 		if(this.imageSprite != null) {
