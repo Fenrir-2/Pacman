@@ -113,11 +113,12 @@ public class Canvas {
         this.canvas = new CanvasPane();
         this.canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.canvas.setDoubleBuffered(true);
-
+        
         this.frame = new JFrame();
         this.frame.setContentPane(this.canvas);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocation(30, 30);
+        //this.frame.createBufferStrategy(2);
         
         this.scoreLabel = new JLabel("Score: ");  
         this.scoreLabel.setVisible(true);
@@ -147,34 +148,12 @@ public class Canvas {
     
     /**
      * 
-     * @param e
-     */
-    //TODO:UTILE?
-    public void add(JLabel e) {
-		e.setLocation(310, 0);
-		e.setVisible(true);
-		this.frame.add(e);    
-    }
-
-    
-    /**
-     * 
      * @return
      */
     public JLabel getScoreLabel() {
 		return this.scoreLabel;
     }
     
-    /**
-     * 
-     * @return
-     */
-    //TODO:UTILE?
-    public JFrame getFrame() {
-		return this.frame;
-    }
-
-
     /**
      * Wait for a specified number of milliseconds before finishing. This
      * provides an easy way to specify a small delay which can be used when
@@ -200,7 +179,7 @@ public class Canvas {
      * @param y the y location of the image
      */
     public void draw(BufferedImage image, int x, int y) {
-        this.objects.remove(image);   // just in case it was already there
+        //this.objects.remove(image);   // just in case it was already there
         this.canvas.getGraphics().drawImage(image, x, y, null);    // add at the end
        
     }

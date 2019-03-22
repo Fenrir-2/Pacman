@@ -32,7 +32,7 @@ public class Fantome extends MoveableEntity{
 		try {
 			this.imageSprite = ImageIO.read(new File("Fantome.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while loading image: Fantome.png");
 			e.printStackTrace();
 		}
 		this.spooked = false;

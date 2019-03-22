@@ -38,7 +38,7 @@ public class Pac_Man extends MoveableEntity{
 		try {
 			this.imageSprite = ImageIO.read(new File("Pacman.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while loading image: Pacman.png");
 			e.printStackTrace();
 		}
 	}

@@ -250,20 +250,29 @@ public class Level {
 	 */
 	//TODO : A Reorganiser en découpant dans les bonnes fonctions et en utilisant les bonnes méthodes 
 	public void computeNextFrame() {
+		
 		try {
 			Thread.sleep(11);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while sleeping");
 			e.printStackTrace();
 		}
 		
-		this.updateGhost();
-		this.updatePacMan();
+		int endState = this.checkEndGame();
 		
-		//Setting the label to the correct score
-		Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
+		while(endState == 0) {
+			//Moving the player and the ghosts
+			this.updateGhost();
+			this.updatePacMan();
+			
+			//Setting the label to the correct score
+			Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
+			this.drawList();
+			
+			Canvas.getCanvas().redraw();
+		}
 		
-		this.drawList();
+		this.endGame(endState);
 	}
 	
 	/**
@@ -271,7 +280,7 @@ public class Level {
 	 */
 	public void updateGhost() {
 		
-		//TODO: A METTRE DANS UPDATEGHOST + REFACTOR
+		//TODO: REFACTOR
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
 			switch(deplacement) {
@@ -336,7 +345,7 @@ public class Level {
 				}
 		}
 		
-		//WAT
+		//Resetting the ghost to their original place.
 		/*
 		int i = 0;
 		int z = 0;
@@ -357,6 +366,7 @@ public class Level {
 	 * 
 	 */
 	public void updatePacMan() {
+		//Retrieving the input.
 		boolean gauche = Canvas.getCanvas().isLeftPressed();
 		boolean droite = Canvas.getCanvas().isRightPressed();
 		boolean haut = Canvas.getCanvas().isUpPressed();
@@ -371,8 +381,6 @@ public class Level {
 		int currX = pacman.getX()/10;
 		int currY = pacman.getY()/10;
 		*/
-		System.out.println("\n\nX:" + x);
-		System.out.println("Y:" + y);
 		Case currSquare = this.list.get(y).get(x);
 		
 		for(Fantome ghost : ghostList) {
@@ -387,6 +395,7 @@ public class Level {
 				//Removing 1 life
 				pacman.perdVie();
 				
+				//No need to check for input for the time being.
 				return;		
 			}
 		}
@@ -495,6 +504,14 @@ public class Level {
 	}
 	
 	/**
+	 * 
+	 * @param endState
+	 */
+	public void endGame(int endState) {
+		this.writeScore();
+	}
+	
+	/**
 	 * Fetches the score from pacman, and writes it to scores.dat
 	 */
 	public void writeScore() {
@@ -502,7 +519,7 @@ public class Level {
 		try {
 			bw = new BufferedWriter(new FileWriter(Level.SCORE_FILE, true));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while creating score Writer");
 			e.printStackTrace();
 		}
 		
@@ -513,14 +530,14 @@ public class Level {
 				bw.write(Integer.toString(this.pacman.getScore()) + "\n");
 				bw.flush();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println("Error while writing score. Closing...");
 				e.printStackTrace();
 			}finally {
 				//Whatever happened, try to close the stream and release the file
 				try {
 					bw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println("Error while closing score stream");
 					e.printStackTrace();
 				}
 			}
@@ -532,34 +549,12 @@ public class Level {
 	 * 
 	 * @param args Automatically sent by the system when the program is called
 	 */
-	public static void main(String[] args) {/*
-		// TODO Auto-generated method stub
+	public static void main(String[] args) {
+		
 		Level board = new Level();
-		Canvas.getCanvas().wait(50);
-		board.drawList();		*/
-		
-		// TODO Auto-generated method stub
-		Level board = new Level();
-		Canvas.getCanvas().wait(50);
-		board.drawList();
-		Pac_Man pacman = null;
-		for(ArrayList<Case> caseList : board.list) {
-			for(Case boardCase : caseList) {
-				if(boardCase.getPacMan() != null) {
-					pacman = boardCase.getPacMan();
-				}
-			}
-		}
-		
-		while(pacman.getPacManLives()>0) {
-			Canvas.getCanvas().wait(50);
-			board.computeNextFrame();
-			board.updatePacMan();
-		}
-		
-		board.writeScore();
-		
-		System.out.println("Fin du game");
+		board.computeNextFrame();
+
+		System.out.println("Game ended");
 	}
 
 }

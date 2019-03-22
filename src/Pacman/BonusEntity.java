@@ -47,7 +47,7 @@ public class BonusEntity extends MoveableEntity{
 		try {
 			this.imageSprite = ImageIO.read(new File(filename));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while loading image: " + filename);
 			e.printStackTrace();
 		}		
 	}
@@ -71,7 +71,7 @@ public class BonusEntity extends MoveableEntity{
 		try {
 			this.imageSprite = ImageIO.read(new File(filename));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while loading image: " + filename);
 			e.printStackTrace();
 		}		
 	}
