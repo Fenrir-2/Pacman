@@ -53,6 +53,12 @@ public class Level {
 	protected ArrayList<BonusEntity> bonusList;
 	
 	/**
+	 * Holds the reference to all the objects that have been modified between two
+	 * calls of computeNextFrame main loop
+	 */
+	protected ArrayList<Drawable> modifiedObjectList;
+	
+	/**
 	 * Level constructor
 	 * 
 	 * No param needed
@@ -62,9 +68,11 @@ public class Level {
 		this.pacman = null;
 		this.ghostList = new ArrayList<Fantome>();
 		this.bonusList = new ArrayList<BonusEntity>();
+		this.modifiedObjectList = new ArrayList<Drawable>();
 		index = 1;
 		
 		this.changeList();
+		this.drawList();
 	}
 	
 	/**
@@ -72,6 +80,10 @@ public class Level {
 	 * Draws, in order: Squares, bonus, ghost, Pacman
 	 */
 	public void drawList() {
+		Canvas.getCanvas().redraw();
+		
+		Canvas.getCanvas().wait(50);
+		
 		//Drawing all the board squares		
 		for(ArrayList<Case> caseList : list) {
 			for(Case boardCase : caseList) {
@@ -91,6 +103,12 @@ public class Level {
 		
 		//Drawing PacMan
 		pacman.draw();
+	}
+	
+	public void drawModifiedList() {
+		for(Drawable object : this.modifiedObjectList) {
+			object.draw();
+		}
 	}
 	
 	/**
@@ -250,29 +268,32 @@ public class Level {
 	 */
 	//TODO : A Reorganiser en découpant dans les bonnes fonctions et en utilisant les bonnes méthodes 
 	public void computeNextFrame() {
-		
-		try {
-			Thread.sleep(11);
-		} catch (InterruptedException e) {
-			System.out.println("Error while sleeping");
-			e.printStackTrace();
-		}
-		
 		int endState = this.checkEndGame();
 		
-		while(endState == 0) {
+		if(endState == 0) {
+						
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				System.out.println("Error while sleeping");
+				e.printStackTrace();
+			}
+
 			//Moving the player and the ghosts
 			this.updateGhost();
 			this.updatePacMan();
 			
 			//Setting the label to the correct score
 			Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
-			this.drawList();
+			this.drawModifiedList();
 			
-			Canvas.getCanvas().redraw();
+			//Clearing the list so no objects are marked are modified
+			this.modifiedObjectList.clear();
+			
+			computeNextFrame();
+		}else {
+			this.endGame(endState);
 		}
-		
-		this.endGame(endState);
 	}
 	
 	/**
@@ -283,66 +304,42 @@ public class Level {
 		//TODO: REFACTOR
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
+			int x = ghost.posHor/10;
+			int y = ghost.posVer/10;
+			if(this.list.get(y).get(x).isWalkable())
+				this.modifiedObjectList.add(0, this.list.get(y).get(x));
+			if(this.list.get(y).get(x).getBonus() != null)
+				this.modifiedObjectList.add(this.list.get(y).get(x).getBonus());
+				
 			switch(deplacement) {
 				case 1:
-					int x = (ghost.posHor/10)-1;
-					int y = ghost.posVer/10;
-					if(this.list.get(y).get(x).isWalkable()) {
-						//this.list.get(y).get(x+1).setBonus(new BonusEntity("", this.index, y*10, x*10));
-						//this.list.get(y).get(x+1).draw();
-						BonusEntity bonus = this.list.get(y).get(x+1).getBonus();
-						if(bonus!=null) {
-							//bonus.draw();
-						}
-						ghost.posHor -= 10;
-						//ghost.draw();
-						
+					if(this.list.get(y).get(x-1).isWalkable()) {
+						ghost.moveTo(ghost.getX() - 10, ghost.getY());
+						this.modifiedObjectList.add(0, this.list.get(y).get(x-1));
 					}
 					break;
 				case 2:
-					x = (ghost.posHor/10);
-					y = (ghost.posVer/10)-1;
-					if(this.list.get(y).get(x).isWalkable()) {
-						//this.list.get(y+1).get(x).setBonus(new BonusEntity("", this.index, y*10, x*10));
-						//this.list.get(y+1).get(x).draw();
-						BonusEntity bonus = this.list.get(y+1).get(x).getBonus();
-						if(bonus!=null) {
-							//bonus.draw();
-						}
-						ghost.posVer -= 10;
-						//System.out.println(ghost.checkCollision(ghost, pacman));
-						//ghost.draw();
+					if(this.list.get(y-1).get(x).isWalkable()) {
+						ghost.moveTo(ghost.getX(), ghost.getY() - 10);
+						this.modifiedObjectList.add(0, this.list.get(y-1).get(x));
 					}
 					break;
 				case 3:
-					x = (ghost.posHor/10)+1;
-					y = (ghost.posVer/10);
-					if(this.list.get(y).get(x).isWalkable()) {
-						//this.list.get(y).get(x-1).setBonus(new BonusEntity("", this.index, y*10, x*10));
-						//this.list.get(y).get(x-1).draw();
-						BonusEntity bonus = this.list.get(y).get(x-1).getBonus();
-						if(bonus!=null) {
-							//bonus.draw();
-						}
-						ghost.posHor += 10;
-						//ghost.draw();
+					if(this.list.get(y).get(x+1).isWalkable()) {
+						ghost.moveTo(ghost.getX() + 10, ghost.getY());
+						this.modifiedObjectList.add(0, this.list.get(y).get(x+1));
 					}
 					break;
 				case 4:
-					x = (ghost.posHor/10);
-					y = (ghost.posVer/10)+1;
-					if(this.list.get(y).get(x).isWalkable()) {
-						//this.list.get(y-1).get(x).setBonus(new BonusEntity("", this.index, y*10, x*10));
-						//this.list.get(y-1).get(x).draw();
-						BonusEntity bonus = this.list.get(y-1).get(x).getBonus();
-						if(bonus!=null) {
-							//bonus.draw();
-						}
-						ghost.posVer += 10;		
-						//ghost.draw();
+					if(this.list.get(y+1).get(x).isWalkable()) {
+						ghost.moveTo(ghost.getX(), ghost.getY() + 10);
+						this.modifiedObjectList.add(0, this.list.get(y+1).get(x));
 					}
 					break;
-				}
+			}
+			
+
+			this.modifiedObjectList.add(ghost);
 		}
 		
 		//Resetting the ghost to their original place.
@@ -391,6 +388,7 @@ public class Level {
 				//Moving it to the beginning position
 				this.list.get(23).get(13).setPacMan(this.pacman);
 				this.pacman.moveTo(130, 230);
+				this.modifiedObjectList.add(this.pacman);
 				
 				//Removing 1 life
 				pacman.perdVie();
@@ -406,82 +404,32 @@ public class Level {
 	 	y += haut?-1:0;
 	 	y += bas?1:0;
 	 	
-	 	if(this.list.get(y).get(x).isWalkable()) {
-			//Removing the Pacman from the current square
-			currSquare.setPacMan(null);
-			this.bonusList.remove(currSquare.getBonus());
-			currSquare.setBonus(null);
-			
-			pacman.moveTo(x*10, y*10);
-			
-			Case nextSquare = this.list.get(y).get(x);
-			nextSquare.setPacMan(this.pacman);
-			//Bonus of the next board square
-			BonusEntity bonus = nextSquare.getBonus();
-			
-			if(bonus != null){
-				pacman.addScore(bonus.getScore());
-				nextSquare.setBonus(null);
-				this.bonusList.remove(bonus);
-			}
-		}
-		 
-		/*
-		if(gauche) {
-			x = (pacman.getX()/10)-1;
-			y = pacman.getY()/10;			
-			if(this.list.get(y).get(x).isWalkable()) {
-				this.list.get(y).get(x+1).draw();
-				pacman.posHor -= 10;
-				if(this.list.get(y).get(x).getBonus()!=null) {
-					pacman.addscore(10);
-					this.list.get(y).get(x).setBonus(null);
-				}
-				pacman.draw();
-			}
-		}
-		if(droite) {
-			x = (pacman.posHor/10)+1;
-			y = pacman.posVer/10;
-			if(this.list.get(y).get(x).isWalkable()) {
-				this.list.get(y).get(x-1).draw();
+	 	if(gauche || droite || haut || bas) {
+		 	if(this.list.get(y).get(x).isWalkable()) {
+				//Removing the Pacman from the current square
+				currSquare.setPacMan(null);
 				
-				pacman.posHor += 10;
-				if(this.list.get(y).get(x).getBonus()!=null) {
-					pacman.addscore(10);
-					this.list.get(y).get(x).setBonus(null);
-				}
-				pacman.draw();
-			}
-		}
-		if(haut) {
-			x = (pacman.posHor/10);
-			y = (pacman.posVer/10)-1;
-			if(this.list.get(y).get(x).isWalkable()) {
-				this.list.get(y+1).get(x).draw();
+				//Moving the Pac
+				pacman.moveTo(x*10, y*10);
 				
-				pacman.posVer -= 10;
-				if(this.list.get(y).get(x).getBonus()!=null) {
-					pacman.addscore(10);
-					this.list.get(y).get(x).setBonus(null);
-				}
-				pacman.draw();
-			}
-		}
-		if(bas) {
-			x = (pacman.posHor/10);
-			y = (pacman.posVer/10)+1;
-			if(this.list.get(y).get(x).isWalkable()) {
-				this.list.get(y-1).get(x).draw();
+				Case nextSquare = this.list.get(y).get(x);
+				nextSquare.setPacMan(this.pacman);
+				//Bonus of the next board square
+				BonusEntity bonus = nextSquare.getBonus();
 				
-				pacman.posVer += 10;
-				if(this.list.get(y).get(x).getBonus()!=null) {
-					pacman.addscore(10);
-					this.list.get(y).get(x).setBonus(null);
+				if(bonus != null){
+					pacman.addScore(bonus.getScore());
+					nextSquare.setBonus(null);
+					this.bonusList.remove(bonus);
 				}
-				pacman.draw();
+				
+				this.modifiedObjectList.add(0, nextSquare);
+				//Adding the square at the top so it is drawn first
+				this.modifiedObjectList.add(0, currSquare);
+				//Adding the square at the top so it is drawn first
+				this.modifiedObjectList.add(pacman);
 			}
-		}*/
+	 	}
 	}
 	
 	/**
@@ -497,8 +445,6 @@ public class Level {
 		//and return 2
 		if(this.bonusList.size() == 0)
 			return 2;
-		
-		
 		
 		return 0; 
 	}
@@ -553,7 +499,7 @@ public class Level {
 		
 		Level board = new Level();
 		board.computeNextFrame();
-
+		Canvas.getCanvas().close();
 		System.out.println("Game ended");
 	}
 

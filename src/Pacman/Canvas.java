@@ -34,12 +34,12 @@ public class Canvas {
     /**
      * The canvas initial width
      */
-    public static final int WIDTH = 800;
+    public static final int WIDTH = 270;
     
     /**
      * The canvas initial height
      */
-    public static final int HEIGHT = 500;
+    public static final int HEIGHT = 320;
     
     /**
      * The canvas initial background color
@@ -120,10 +120,10 @@ public class Canvas {
         this.frame.setLocation(30, 30);
         //this.frame.createBufferStrategy(2);
         
-        this.scoreLabel = new JLabel("Score: ");  
+        this.scoreLabel = new JLabel("Score: "); 
+        this.frame.add(scoreLabel);
         this.scoreLabel.setVisible(true);
-        this.scoreLabel.setLocation(310, 0);
-        this.canvas.add(scoreLabel);
+        this.scoreLabel.setLocation(0, 0);
 
         this.frame.pack();
 
@@ -144,6 +144,10 @@ public class Canvas {
                 canvas.repaint();
             }
         });
+    }
+    
+    public void close() {
+    	this.frame.dispose();
     }
     
     /**
@@ -179,7 +183,7 @@ public class Canvas {
      * @param y the y location of the image
      */
     public void draw(BufferedImage image, int x, int y) {
-        //this.objects.remove(image);   // just in case it was already there
+        this.objects.remove(image);   // just in case it was already there
         this.canvas.getGraphics().drawImage(image, x, y, null);    // add at the end
        
     }
