@@ -1,10 +1,12 @@
 package Pacman;
 
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
@@ -80,9 +82,11 @@ public class Level {
 	 * Draws, in order: Squares, bonus, ghost, Pacman
 	 */
 	public void drawList() {
+		//Clearing the board
 		Canvas.getCanvas().redraw();
 		
-		Canvas.getCanvas().wait(50);
+		//Waiting for the clear to be finished
+		Canvas.getCanvas().wait(100);
 		
 		//Drawing all the board squares		
 		for(ArrayList<Case> caseList : list) {
@@ -105,7 +109,11 @@ public class Level {
 		pacman.draw();
 	}
 	
+	/**
+	 * 
+	 */
 	public void drawModifiedList() {
+		//Usually, the list consists of the board squares first, then the other objects.
 		for(Drawable object : this.modifiedObjectList) {
 			object.draw();
 		}
@@ -280,8 +288,30 @@ public class Level {
 			}
 
 			//Moving the player and the ghosts
-			this.updateGhost();
-			this.updatePacMan();
+			SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	            	Level.this.updateGhost();
+	            }
+	        });
+			
+			//Allows the ghost movement to be done 
+			//We still need to wait for all modification to the modified list to be done to draw.
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						Level.this.updatePacMan();
+					}
+				});
+			} catch (InvocationTargetException e) {
+				System.out.println("Error calling updatePacman");
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				System.out.println("Error calling update Pacman");
+				e.printStackTrace();
+			}
+			
 			
 			//Setting the label to the correct score
 			Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
@@ -290,6 +320,7 @@ public class Level {
 			//Clearing the list so no objects are marked are modified
 			this.modifiedObjectList.clear();
 			
+			//As long as everything is fine, keep computing new states
 			computeNextFrame();
 		}else {
 			this.endGame(endState);
@@ -310,35 +341,23 @@ public class Level {
 				this.modifiedObjectList.add(0, this.list.get(y).get(x));
 			if(this.list.get(y).get(x).getBonus() != null)
 				this.modifiedObjectList.add(this.list.get(y).get(x).getBonus());
-				
+			
 			switch(deplacement) {
-				case 1:
-					if(this.list.get(y).get(x-1).isWalkable()) {
-						ghost.moveTo(ghost.getX() - 10, ghost.getY());
-						this.modifiedObjectList.add(0, this.list.get(y).get(x-1));
-					}
-					break;
-				case 2:
-					if(this.list.get(y-1).get(x).isWalkable()) {
-						ghost.moveTo(ghost.getX(), ghost.getY() - 10);
-						this.modifiedObjectList.add(0, this.list.get(y-1).get(x));
-					}
-					break;
-				case 3:
-					if(this.list.get(y).get(x+1).isWalkable()) {
-						ghost.moveTo(ghost.getX() + 10, ghost.getY());
-						this.modifiedObjectList.add(0, this.list.get(y).get(x+1));
-					}
-					break;
-				case 4:
-					if(this.list.get(y+1).get(x).isWalkable()) {
-						ghost.moveTo(ghost.getX(), ghost.getY() + 10);
-						this.modifiedObjectList.add(0, this.list.get(y+1).get(x));
-					}
-					break;
+				case 1: x += this.list.get(y).get(x-1).isWalkable()?-1:0;
+				break;
+				
+				case 2: y += this.list.get(y-1).get(x).isWalkable()?-1:0;
+				break;
+				
+				case 3: x += this.list.get(y).get(x+1).isWalkable()?1:0;
+				break;
+				
+				case 4: y += this.list.get(y+1).get(x).isWalkable()?1:0;
+				break;
 			}
 			
-
+			ghost.moveTo(x*10, y*10);
+			this.modifiedObjectList.add(0, this.list.get(y).get(x));
 			this.modifiedObjectList.add(ghost);
 		}
 		
