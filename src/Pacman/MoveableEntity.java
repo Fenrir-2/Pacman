@@ -19,19 +19,21 @@ public abstract class MoveableEntity extends Entity{
 	}
 	
 	/**
-	 * A FAIRE
-	 * @param gauche
+	 * This Method manages the Horizontal moves of PacMan using a ternary condition
+	 * @param gauche boolean for the move conditions
 	 */
 	public void deplacementHorizontal(Boolean gauche) {
+		//The Horizontal position gets -1 if gauche is true, else it gets +1 
 		this.posHor += gauche?-1:1;
 	}
 	
 	/**
-	 * A FAIRE
+	 * This Method manages the Vertical moves of PacMan using a ternary condition
 	 * 
-	 * @param haut
+	 * @param haut boolean for the move conditions
 	 */
 	public void deplacementVertical(Boolean haut) {
+		//The vertical position gets -1 if haut is true, else it gets +1 
 		this.posVer += haut?-1:1;
 	}
 	

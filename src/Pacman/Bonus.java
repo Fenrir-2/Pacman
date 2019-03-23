@@ -11,7 +11,7 @@ public enum Bonus {
 	private final int levelMin;
 	
 	/**
-	 * 
+	 * Type of the bonus
 	 */
 	private String type;
 	
@@ -21,16 +21,16 @@ public enum Bonus {
 	private final int levelMax;
 	
 	/**
-	 * 
+	 * Score of the bonus
 	 */
 	private final int score;
 	
 	/**
 	 * 
-	 * @param type
+	 * @param type Type of the bonus 
 	 * @param levelMin
 	 * @param levelMax
-	 * @param score
+	 * @param score Score of the bonus
 	 */
 	Bonus(String type, int levelMin, int levelMax, int score){
 		this.type = type;
@@ -40,16 +40,16 @@ public enum Bonus {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter of the bonus' score
+	 * @return the score of the bonus
 	 */
 	public int getScore() {
 		return this.score;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter of the bonus' type
+	 * @return the type of the bonus
 	 */
 	public String getType() {
 		return this.type;

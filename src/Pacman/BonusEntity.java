@@ -54,10 +54,10 @@ public class BonusEntity extends MoveableEntity{
 	
 	/**
 	 * 
-	 * @param bonus
-	 * @param x
-	 * @param y
-	 * @param level
+	 * @param bonus Bonus type 
+	 * @param x Location x of the bonus
+	 * @param y Location y of the bonus
+	 * @param level Index of the level
 	 */
 	public BonusEntity(Bonus bonus, int level, int x, int y) {
 		super(x, y);
@@ -77,15 +77,15 @@ public class BonusEntity extends MoveableEntity{
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the bonus' score
+	 * @return the score of the bonus
 	 */
 	public int getScore() {
 		return this.score;
 	}
 	
 	/**
-	 * 
+	 * Draw a bonus object on the Canvas
 	 */
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();

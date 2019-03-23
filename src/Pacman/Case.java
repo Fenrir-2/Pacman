@@ -14,34 +14,34 @@ import javax.imageio.ImageIO;
 public class Case extends Drawable{
 	
 	/**
-	 * TODO
+	 * Attribute to know if a case object is walkable or not
 	 */
 	protected boolean walkable;
 	
 	/**
-	 * TODO
+	 * The bonus located on the case object
 	 */
 	protected BonusEntity bonus;
 	
 	/**
-	 * TODO
+	 * The pacman located on the case object
 	 */
 	protected Pac_Man pacman;
 	
 	/**
-	 * TODO
+	 * the ghost located on the case object
 	 */
 	protected Fantome fantome;
 	
 	/**
-	 * TODO
 	 * 
-	 * @param walkable
-	 * @param bonus
-	 * @param pacman
-	 * @param fantome
-	 * @param x
-	 * @param y
+	 * 
+	 * @param walkable To put a Case walkable or not
+	 * @param bonus To put a bonus on a Case
+	 * @param pacman To put a pacman on a Case
+	 * @param fantome To put a ghost on a Case
+	 * @param x Location x of the Case
+	 * @param y Location y of the case
 	 */
 	public Case(boolean walkable, BonusEntity bonus, Pac_Man pacman, Fantome fantome, int x, int y) {
 		super(x, y);
@@ -127,7 +127,7 @@ public class Case extends Drawable{
 	}
 	
 	/**
-	 * 
+	 * Draws the Case on the canvas
 	 */
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();

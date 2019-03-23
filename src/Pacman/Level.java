@@ -264,9 +264,9 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * This method refresh the board game, set the new locations of Pacman and the ghosts
 	 */
-	//TODO : A Reorganiser en découpant dans les bonnes fonctions et en utilisant les bonnes méthodes 
+	//TODO : A Reorganiser en dÃ©coupant dans les bonnes fonctions et en utilisant les bonnes mÃ©thodes 
 	public void computeNextFrame() {
 		int endState = this.checkEndGame();
 		
@@ -297,7 +297,7 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * This method update the Ghosts position, it manages the Ghosts moves
 	 */
 	public void updateGhost() {
 		
@@ -360,7 +360,7 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * This method update the PacMan Position, it manages the Pacman's moves and also the collision between Pacman and the Ghost
 	 */
 	public void updatePacMan() {
 		//Retrieving the input.
@@ -434,7 +434,9 @@ public class Level {
 	
 	/**
 	 * 
-	 * @return
+	 * @return 1 if Pacman's life is equal to 0. 
+	 * @return 2 if all the bonuses are eaten 
+	 * @return 0 in any other scenario
 	 */
 	public int checkEndGame() {
 		//In case Pacman died
@@ -454,6 +456,7 @@ public class Level {
 	 * @param endState
 	 */
 	public void endGame(int endState) {
+		//Write the score of the game 
 		this.writeScore();
 	}
 	
@@ -496,10 +499,12 @@ public class Level {
 	 * @param args Automatically sent by the system when the program is called
 	 */
 	public static void main(String[] args) {
-		
+		//Create a new Level
 		Level board = new Level();
+		//Refresh the Level with ComputeNextFrame
 		board.computeNextFrame();
 		Canvas.getCanvas().close();
+		//If the game ends, it prints "Game ended"
 		System.out.println("Game ended");
 	}
 
