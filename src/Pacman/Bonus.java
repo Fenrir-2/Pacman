@@ -6,7 +6,7 @@ public enum Bonus {
 	SUPER_GOMME("super", 0, Level.MAX_INDEX, 100);
 	
 	/**
-	 * 
+	 * Minimum level for the bonus to appear
 	 */
 	private final int levelMin;
 	
@@ -16,7 +16,7 @@ public enum Bonus {
 	private String type;
 	
 	/**
-	 * 
+	 * Maximum level for the bonus to appear
 	 */
 	private final int levelMax;
 	
@@ -56,9 +56,11 @@ public enum Bonus {
 	}
 	
 	/**
+	 * Checks if the level is inside the bonus' range
 	 * 
-	 * @param level
-	 * @return
+	 * @param level Current level from the Level object
+	 * 
+	 * @return true if the current level is inside the bonus' range, false if outside.
 	 */
 	public boolean checkLevel(int level) {
 		return level >= this.levelMin && level <= this.levelMax;

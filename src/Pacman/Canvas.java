@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-/**
+/*
  * TODO: ADD A LAYOUT MANAGER TO FIX THE SCORE
  */
 
@@ -151,8 +151,9 @@ public class Canvas {
     }
     
     /**
+     * Getter of the scoreLabel field.
      * 
-     * @return
+     * @return the score JLabel
      */
     public JLabel getScoreLabel() {
 		return this.scoreLabel;

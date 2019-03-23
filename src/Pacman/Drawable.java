@@ -27,8 +27,8 @@ public abstract class Drawable {
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal position
+	 * @param y The vertical position
 	 */
 	public Drawable(int x, int y) {
 		this.posHor = x;
@@ -38,14 +38,14 @@ public abstract class Drawable {
 	}
 	
 	/**
-	 * 
+	 * Draws the object.
 	 */
 	public abstract void draw();
 	
 	/**
 	 * 
 	 * @param x The horizontal position
-	 * @param y The Vertical position
+	 * @param y The vertical position
 	 */
 	public void moveTo(int x, int y) {
 		this.posHor = x;

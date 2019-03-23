@@ -117,6 +117,12 @@ public class Level {
 		for(Drawable object : this.modifiedObjectList) {
 			object.draw();
 		}
+		
+		//Setting the label to the correct score
+		Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
+		
+		//Clearing the list so no objects are marked are modified
+		this.modifiedObjectList.clear();
 	}
 	
 	/**
@@ -312,17 +318,13 @@ public class Level {
 				e.printStackTrace();
 			}
 			
-			
-			//Setting the label to the correct score
-			Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
+			//Drawing the list of modified object, which is smaller.
 			this.drawModifiedList();
-			
-			//Clearing the list so no objects are marked are modified
-			this.modifiedObjectList.clear();
 			
 			//As long as everything is fine, keep computing new states
 			computeNextFrame();
 		}else {
+			//The endGame functions handles the different end game cases
 			this.endGame(endState);
 		}
 	}
@@ -452,8 +454,11 @@ public class Level {
 	}
 	
 	/**
+	 * Check all the end game cases, which are: Pacman has no lives left, there are
+	 * no bonuses left
 	 * 
-	 * @return
+	 * @return 0 if everything's fine, 1 if Pacman has no more lives, 2 if there are no more
+	 * bonuses
 	 */
 	public int checkEndGame() {
 		//In case Pacman died
@@ -469,8 +474,9 @@ public class Level {
 	}
 	
 	/**
+	 * Handles the different ending scenarios
 	 * 
-	 * @param endState
+	 * @param endState The state that has been detected. Cf {@link #checkEndGame()}
 	 */
 	public void endGame(int endState) {
 		this.writeScore();

@@ -10,8 +10,8 @@ public abstract class Entity extends Drawable{
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal position
+	 * @param y The vertical position
 	 */
 	public Entity(int x, int y) {
 		super(x, y);
@@ -19,11 +19,11 @@ public abstract class Entity extends Drawable{
 	}
 	
 	/**
-	 * V√©rifie si l'entit√© actuelle est en collision avec l'entit√© e
+	 * VÈrifie si l'entitÈ actuelle est en collision avec l'entitÈe
 	 * 
-	 * @param e L'entit√© √† v√©rifier
+	 * @param e L'entitÈ ‡† vÈrifier
 	 * 
-	 * @return Vrai si les coordonn√©es des 2 entit√©s sont identiques
+	 * @return Vrai si les coordonnÈes des 2 entitÈs sont identiques
 	 */
 	public boolean checkCollision(Entity e) {
 		assert(e != null) : "e n'est pas d√©fini, ou est null";
@@ -34,7 +34,7 @@ public abstract class Entity extends Drawable{
 	}
 	
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public abstract void draw();

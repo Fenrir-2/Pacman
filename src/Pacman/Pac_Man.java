@@ -29,9 +29,10 @@ public class Pac_Man extends MoveableEntity{
 	protected int score = 0;
 	
 	/**
+	 * Main constructor for Pac_Man objects.
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal position
+	 * @param y The vertical position
 	 */
 	public Pac_Man(int x, int y) {
 		super(x, y);
@@ -49,18 +50,18 @@ public class Pac_Man extends MoveableEntity{
 	public void perdVie() {
 		this.nbVies = this.nbVies-1;
 		assert(this.nbVies >= 0) : "Number of lives below zero";
-		assert(this.nbVies == this.nbVies-1) : "Le nombre de vie de pacman n'a pas Ã©tÃ© mis Ã  jour correctement";
+		assert(this.nbVies == this.nbVies-1) : "Le nombre de vie de pacman n'a pas été mis à  jour correctement";
 	}
 	
 	/**
+	 * Changes the Pac_Man super mode state.
 	 * 
-	 * @param state
-	 * 
+	 * @param state the new {@link #SuperMode} state
 	 */
 
 	public void setSuperMode(boolean state) {
 		this.SuperMode = state;
-		assert(this.SuperMode == state) : "L'Ã©tat du SuperMode n'est pas respectÃ©";
+		assert(this.SuperMode == state) : "L'état du SuperMode n'est pas respecté";
 		
 	}
 	
@@ -81,11 +82,14 @@ public class Pac_Man extends MoveableEntity{
 	}
 	
 	/**
+	 * Adds an integer to Pac_Man's score
 	 * 
-	 * @param score the score of the bonus pacman eats
+	 * @param score the score of the bonus pacman eats. Must be positive
 	 */
 	public void addScore(int score) {
+		assert(score > 0) : "Negative score received";
 		this.score = this.score+score;
+		assert(this.score > 0) : "Negative score after addScore";
 	}
 	
 	/**
@@ -96,6 +100,7 @@ public class Pac_Man extends MoveableEntity{
         canvas.draw(this.imageSprite, this.posHor, this.posVer);
 	}
 	/**
+	 * Score getter.
 	 * 
 	 * @return Pacman's score
 	 */

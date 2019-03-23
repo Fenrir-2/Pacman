@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"Pacman","l":"Bonus"},{"p":"Pacman","l":"BonusEntity"},{"p":"Pacman","l":"Canvas"},{"p":"Pacman","l":"Case"},{"p":"Pacman","l":"Drawable"},{"p":"Pacman","l":"Entity"},{"p":"Pacman","l":"Fantome"},{"p":"Pacman","l":"Level"},{"p":"Pacman","l":"MoveableEntity"},{"p":"Pacman","l":"Pac_Man"}]

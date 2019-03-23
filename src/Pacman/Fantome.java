@@ -24,8 +24,8 @@ public class Fantome extends MoveableEntity{
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal position
+	 * @param y The vertical position
 	 */
 	public Fantome(int x, int y) {
 		super(x, y);
@@ -42,7 +42,8 @@ public class Fantome extends MoveableEntity{
 	
 	/**
 	 * This method manages the Spooked state of ghosts, and sets this state according to the entry parameter
-	 * @param state
+	 * 
+	 * @param state the new spooked state
 	 */
 	public void setSpooked(boolean state) {
 		this.spooked = state;
@@ -51,7 +52,8 @@ public class Fantome extends MoveableEntity{
 	
 	/**
 	 * This method manages the Dead state of ghosts, and sets this state according to the entry parameter
-	 * @param state
+	 * 
+	 * @param state the new dead state
 	 */
 	public void setDead(boolean state){
 		this.dead = state;

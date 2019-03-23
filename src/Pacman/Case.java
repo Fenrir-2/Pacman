@@ -84,7 +84,7 @@ public class Case extends Drawable{
 	/**
 	 * Changes the bonus on the square.
 	 * 
-	 * @param bonus
+	 * @param bonus the {@link #bonus} to set on the square
 	 */
 	public void setBonus(BonusEntity bonus) {
 		this.bonus = bonus;

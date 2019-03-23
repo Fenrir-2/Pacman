@@ -14,21 +14,16 @@ import javax.imageio.ImageIO;
 public class BonusEntity extends MoveableEntity{
 	
 	/**
-	 * 
+	 * The bonus' score
 	 */
 	protected int score;
 	
 	/**
 	 * 
-	 */
-	protected String type;
-	
-	/**
-	 * 
-	 * @param type
-	 * @param level
-	 * @param x
-	 * @param y
+	 * @param type The type of the bonus. Used for image loading
+	 * @param level Index of the level
+	 * @param x The horizontal position
+	 * @param y The vertical position
 	 */
 	public BonusEntity(String type, int level, int x, int y) {
 		super(x, y);
@@ -55,19 +50,22 @@ public class BonusEntity extends MoveableEntity{
 	/**
 	 * 
 	 * @param bonus Bonus type 
+	 * @param level Index of the leve
 	 * @param x Location x of the bonus
-	 * @param y Location y of the bonus
-	 * @param level Index of the level
+	 * @param y Location y of the bonusl
 	 */
 	public BonusEntity(Bonus bonus, int level, int x, int y) {
 		super(x, y);
 		
-		String filename = "bonus_" + bonus.getType() + ".png";
+		//Checking if the bonus is valid
 		if(!bonus.checkLevel(level))
 			throw new IllegalArgumentException("BonusEntity Level out of bounds");
 		
+		//Retrieving the score
 		this.score = bonus.getScore();
 		
+		//Image loading
+		String filename = "bonus_" + bonus.getType() + ".png";
 		try {
 			this.imageSprite = ImageIO.read(new File(filename));
 		} catch (IOException e) {
