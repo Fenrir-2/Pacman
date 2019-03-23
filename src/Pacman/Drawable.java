@@ -11,17 +11,17 @@ import java.awt.image.BufferedImage;
 public abstract class Drawable {
 	
 	/**
-	 * 
+	 * Image File of the Drawable object
 	 */
 	protected BufferedImage imageSprite;
 	
 	/**
-	 * 
+	 * Horizontal Position of the drawable object
 	 */
 	protected int posHor;
 	
 	/**
-	 * 
+	 *  Vertical Position of the drawable object
 	 */
 	protected int posVer;
 	
@@ -33,7 +33,8 @@ public abstract class Drawable {
 	public Drawable(int x, int y) {
 		this.posHor = x;
 		this.posVer = y;
-		
+		assert(x>0) : "x est négatif";
+		assert(y>0) : "y est négatif";
 	}
 	
 	/**
@@ -43,8 +44,8 @@ public abstract class Drawable {
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal position
+	 * @param y The Vertical position
 	 */
 	public void moveTo(int x, int y) {
 		this.posHor = x;
@@ -52,16 +53,16 @@ public abstract class Drawable {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the horizontal position
+	 * @return the horizontal position
 	 */
 	public int getX() {
 		return this.posHor;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Vertical position
+	 * @return the vertical position
 	 */
 	public int getY() {
 		return this.posVer;

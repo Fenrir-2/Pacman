@@ -13,12 +13,12 @@ import javax.imageio.ImageIO;
 public class Fantome extends MoveableEntity{
 	
 	/**
-	 * 
+	 * Attribute to know if ghosts are spooked or not
 	 */
 	protected boolean spooked;
 	
 	/**
-	 * 
+	 *  Attribute to know if ghosts are dead or not
 	 */
 	protected boolean dead;
 	
@@ -29,6 +29,7 @@ public class Fantome extends MoveableEntity{
 	 */
 	public Fantome(int x, int y) {
 		super(x, y);
+		//Loads the ghosts image file
 		try {
 			this.imageSprite = ImageIO.read(new File("Fantome.png"));
 		} catch (IOException e) {
@@ -40,39 +41,41 @@ public class Fantome extends MoveableEntity{
 	}
 	
 	/**
-	 * 
+	 * This method manages the Spooked state of ghosts, and sets this state according to the entry parameter
 	 * @param state
 	 */
 	public void setSpooked(boolean state) {
 		this.spooked = state;
+		assert(this.spooked == state) : "L'état spooked des fantomes n'est pas respecté";
 	}
 	
 	/**
-	 * 
+	 * This method manages the Dead state of ghosts, and sets this state according to the entry parameter
 	 * @param state
 	 */
 	public void setDead(boolean state){
 		this.dead = state;
+		assert(this.dead == state) : "L'état dead des fantomes n'est pas respecté";
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter to Spooked state
+	 * @return the current state of spooked
 	 */
 	public boolean getSpooked() {
 		return this.spooked;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter to Dead state
+	 * @return the current state of dead
 	 */
 	public boolean getDead() {
 		return this.dead;
 	}
 	
 	/**
-	 * 
+	 * Draws a Ghost entity on the canvas
 	 */
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();

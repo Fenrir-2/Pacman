@@ -19,13 +19,14 @@ public abstract class Entity extends Drawable{
 	}
 	
 	/**
-	 * Vérifie si l'entité actuelle est en collision avec l'entité e
+	 * VÃ©rifie si l'entitÃ© actuelle est en collision avec l'entitÃ© e
 	 * 
-	 * @param e L'entité à vérifier
+	 * @param e L'entitÃ© Ã  vÃ©rifier
 	 * 
-	 * @return Vrai si les coordonnées des 2 entités sont identiques
+	 * @return Vrai si les coordonnÃ©es des 2 entitÃ©s sont identiques
 	 */
 	public boolean checkCollision(Entity e) {
+		assert(e != null) : "e n'est pas dÃ©fini, ou est null";
 		if(e.posHor == this.posHor && e.posVer == this.posVer)
 			return true;
 
