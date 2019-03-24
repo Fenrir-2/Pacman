@@ -6,7 +6,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Short class desciption
+ * This class represents all the different bonus entities, according to the {@link Pacman.Bonus}.
+ * Every bonus possesses a type and a score
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -19,40 +20,17 @@ public class BonusEntity extends MoveableEntity{
 	protected int score;
 	
 	/**
-	 * 
-	 * @param type The type of the bonus. Used for image loading
-	 * @param level Index of the level
-	 * @param x The horizontal position
-	 * @param y The vertical position
+	 * The link to the BonusEntity
 	 */
-	public BonusEntity(String type, int level, int x, int y) {
-		super(x, y);
-		String filename = "bonus_";
-		if(type=="s") {
-			filename += "simple.png";
-			this.score = 10;
-		}else if(type=="S"){
-			filename += "super.png";
-			this.score = 100;
-		}
-		else {
-			throw new IllegalArgumentException("Unrecognized type: " + type);
-		}
-		
-		try {
-			this.imageSprite = ImageIO.read(new File(filename));
-		} catch (IOException e) {
-			System.out.println("Error while loading image: " + filename);
-			e.printStackTrace();
-		}		
-	}
+	protected Bonus bonus;
 	
 	/**
+	 * Main constructor for BonusEntity objects.
 	 * 
 	 * @param bonus Bonus type 
-	 * @param level Index of the leve
+	 * @param level Index of the level
 	 * @param x Location x of the bonus
-	 * @param y Location y of the bonusl
+	 * @param y Location y of the bonus
 	 */
 	public BonusEntity(Bonus bonus, int level, int x, int y) {
 		super(x, y);
@@ -71,7 +49,9 @@ public class BonusEntity extends MoveableEntity{
 		} catch (IOException e) {
 			System.out.println("Error while loading image: " + filename);
 			e.printStackTrace();
-		}		
+		}
+		
+		this.bonus = bonus;
 	}
 	
 	/**
@@ -91,6 +71,14 @@ public class BonusEntity extends MoveableEntity{
 			canvas.draw(this.imageSprite, this.posHor, this.posVer);
 		}
 
+	}
+	
+	/**
+	 * Returns the {@link Pacman.Bonus} object that was used to create this {@link Pacman.BonusEntity}
+	 * @return the {@link Pacman.Bonus} object that was used to create this  {@link Pacman.BonusEntity}
+	 */
+	public Bonus getBonusType() {
+		return this.bonus;
 	}
 
 }

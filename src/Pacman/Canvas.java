@@ -118,7 +118,6 @@ public class Canvas {
         this.frame.setContentPane(this.canvas);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocation(30, 30);
-        //this.frame.createBufferStrategy(2);
         
         this.scoreLabel = new JLabel("Score: "); 
         this.frame.add(scoreLabel);
@@ -146,6 +145,9 @@ public class Canvas {
         });
     }
     
+    /**
+     * Destroys the main JFrame component and closes the window
+     */
     public void close() {
     	this.frame.dispose();
     }

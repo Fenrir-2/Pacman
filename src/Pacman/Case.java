@@ -6,7 +6,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Short class desciption
+ * The class Case represents a square on the board.
+ * Every single Case is either Walkable or not
+ * A Case possesses a location on the board and can also possess a {@link Pacman.BonusEntity}, 
+ * a {@link Pacman.Fantome} or a {@link Pacman.Pac_Man}
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -34,7 +37,7 @@ public class Case extends Drawable{
 	protected Fantome fantome;
 	
 	/**
-	 * 
+	 *  Main constructor for Case objects.
 	 * 
 	 * @param walkable To put a Case walkable or not
 	 * @param bonus To put a bonus on a Case

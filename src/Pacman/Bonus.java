@@ -1,8 +1,25 @@
 package Pacman;
 
+/**
+ * 
+ * Holds a definition of all the different bonuses.
+ * They are implemented by {@link Pacman.BonusEntity}.
+ * 
+ * @author Nicolas FONNIER, Henri GLEVEAU
+ *
+ */
 public enum Bonus {
 	
+	/**
+	 * Simplest bonus. Found on nearly every walkable square.
+	 * Adds 10 score.
+	 */
 	GOMME("simple", 0, Level.MAX_INDEX, 10),
+	
+	/**
+	 * Super bonus. Allows the ghost to be spooked and Pacman to change to superMode
+	 * Adds 100 score.
+	 */
 	SUPER_GOMME("super", 0, Level.MAX_INDEX, 100);
 	
 	/**

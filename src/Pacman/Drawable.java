@@ -3,7 +3,8 @@ package Pacman;
 import java.awt.image.BufferedImage;
 
 /**
- * Short class description
+ * The drawable class is an abstract class which represents all the
+ * drawable object on the game using images to display them
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -26,6 +27,7 @@ public abstract class Drawable {
 	protected int posVer;
 	
 	/**
+	 * Main constructor for Drawable objects.
 	 * 
 	 * @param x The horizontal position
 	 * @param y The vertical position
@@ -43,6 +45,7 @@ public abstract class Drawable {
 	public abstract void draw();
 	
 	/**
+	 * Acts as a setter for both X and Y positions.
 	 * 
 	 * @param x The horizontal position
 	 * @param y The vertical position

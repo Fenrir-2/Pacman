@@ -11,10 +11,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 /**
- * Short class description
+ * The class Level represents the board game with all the entities such as Pacman, ghosts, Cases and bonuses
+ * This class holds the "main" method, to allow the player to play the game
+ * It computes each frame, to move the entities according to the keyboard inputs
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
- *
  */
 public class Level {
 	
@@ -61,9 +62,8 @@ public class Level {
 	protected ArrayList<Drawable> modifiedObjectList;
 	
 	/**
-	 * Level constructor
-	 * 
-	 * No param needed
+	 * Level constructor, 
+	 * no params needed
 	 */
 	public Level() {
 		this.list = new ArrayList<ArrayList<Case>>();
@@ -110,7 +110,8 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * Draws the list of all the {@link Pacman.Drawable} objects that have been modified
+	 * between two calls of {@link #computeNextFrame()}.
 	 */
 	public void drawModifiedList() {
 		//Usually, the list consists of the board squares first, then the other objects.
@@ -278,16 +279,17 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * Checks the ending scenarios with {@link #checkEndGame()}, calls {@link #endGame(int)} if 1 or 2.
+	 * If 0, calls successively {@link #updateGhost()}, then {@link #updatePacMan()},
+	 * then {@link #drawModifiedList()}, then itself again.
 	 */
-	//TODO : A Reorganiser en d�coupant dans les bonnes fonctions et en utilisant les bonnes m�thodes 
 	public void computeNextFrame() {
 		int endState = this.checkEndGame();
 		
 		if(endState == 0) {
 						
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				System.out.println("Error while sleeping");
 				e.printStackTrace();
@@ -379,7 +381,7 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * TODO: Description
 	 */
 	public void updatePacMan() {
 		//Retrieving the input.
@@ -410,7 +412,10 @@ public class Level {
 				this.modifiedObjectList.add(this.pacman);
 				
 				//Removing 1 life
-				pacman.perdVie();
+				if(!pacman.getSuperMode())
+					pacman.perdVie();
+				else
+					ghost.setDead(true);
 				
 				//No need to check for input for the time being.
 				return;		
@@ -439,6 +444,9 @@ public class Level {
 				if(bonus != null){
 					pacman.addScore(bonus.getScore());
 					nextSquare.setBonus(null);
+					if(bonus.getBonusType() == Bonus.SUPER_GOMME) {
+						
+					}
 					this.bonusList.remove(bonus);
 				}
 				

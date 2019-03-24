@@ -1,7 +1,9 @@
 package Pacman;
 
 /**
- * Short class desciption
+ * The Entity class represents all the differents entities on the game, 
+ * such as PacMan, bonuses, Ghosts
+ * It can also manage the collision between two entities.
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -9,6 +11,7 @@ package Pacman;
 public abstract class Entity extends Drawable{
 	
 	/**
+	 *  Main constructor for Entity objects.
 	 * 
 	 * @param x The horizontal position
 	 * @param y The vertical position

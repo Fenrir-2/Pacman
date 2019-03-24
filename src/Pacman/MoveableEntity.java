@@ -1,7 +1,9 @@
 package Pacman;
 
 /**
- * Short class description
+ * The MoveableEntity class is a class which represents 
+ * all the movable entities on the board game, such as Pacman or ghosts
+ * It manages the movement of all the entities
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -9,7 +11,7 @@ package Pacman;
 public abstract class MoveableEntity extends Entity{
 	
 	/**
-	 * Constructor for the MoveableEntity 
+	 * Main constructor for the MoveableEntity objects.
 	 * 
 	 * @param x the x location of the entity
 	 * @param y the y location of the entity

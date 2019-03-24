@@ -6,7 +6,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Short class description
+ * Pacman class represents the entity "PacMan" on the board
+ * It's a movable entity with lives and the possibility to 
+ * evolve in a SuperMode to eat ghosts for a short amount of time (15 seconds)
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -69,7 +71,7 @@ public class Pac_Man extends MoveableEntity{
 			try {
 				this.imageSprite = ImageIO.read(new File("Pacman_super.png"));
 			} catch (IOException e) {
-				System.out.println("Error while loading image: Pacman.png");
+				System.out.println("Error while loading image: Pacman_super.png");
 				e.printStackTrace();
 			}
 		}else {
