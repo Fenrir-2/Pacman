@@ -55,6 +55,8 @@ public class Pac_Man extends MoveableEntity{
 	
 	/**
 	 * Changes the Pac_Man super mode state.
+	 * When the state is set to true, Pacman sprite changes to "Pacman_super.png"
+	 * Otherwise, it falls back to the default "Pacman.png"
 	 * 
 	 * @param state the new {@link #SuperMode} state
 	 */
@@ -63,6 +65,21 @@ public class Pac_Man extends MoveableEntity{
 		this.SuperMode = state;
 		assert(this.SuperMode == state) : "L'état du SuperMode n'est pas respecté";
 		
+		if(this.SuperMode == true) {
+			try {
+				this.imageSprite = ImageIO.read(new File("Pacman_super.png"));
+			} catch (IOException e) {
+				System.out.println("Error while loading image: Pacman.png");
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				this.imageSprite = ImageIO.read(new File("Pacman.png"));
+			} catch (IOException e) {
+				System.out.println("Error while loading image: Pacman.png");
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

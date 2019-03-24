@@ -280,7 +280,7 @@ public class Level {
 	/**
 	 * 
 	 */
-	//TODO : A Reorganiser en découpant dans les bonnes fonctions et en utilisant les bonnes méthodes 
+	//TODO : A Reorganiser en dï¿½coupant dans les bonnes fonctions et en utilisant les bonnes mï¿½thodes 
 	public void computeNextFrame() {
 		int endState = this.checkEndGame();
 		
@@ -330,11 +330,9 @@ public class Level {
 	}
 	
 	/**
-	 * 
+	 * TODO: Description
 	 */
 	public void updateGhost() {
-		
-		//TODO: REFACTOR
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
 			int x = ghost.posHor/10;
