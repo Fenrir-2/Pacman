@@ -95,7 +95,6 @@ public class Case extends Drawable{
 	
 	/**
 	 * Return the Pacman on the square, which should be the only Pacman in the game
-	 * TODO: ADD INVARIANT CHECK?
 	 * @return The Pacman on the square
 	 */
 	public Pac_Man getPacMan() {

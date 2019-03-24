@@ -25,6 +25,11 @@ public class Level {
 	protected static final int MAX_INDEX = 3;
 	
 	/**
+	 * Size of the image of a square
+	 */
+	protected static final int SQUARE_SIZE = 10;
+	
+	/**
 	 * The name of the score file
 	 */
 	protected static final String SCORE_FILE = "score.dat"; 
@@ -122,6 +127,7 @@ public class Level {
 		//Setting the label to the correct score
 		Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
 		
+		
 		//Clearing the list so no objects are marked are modified
 		this.modifiedObjectList.clear();
 	}
@@ -190,14 +196,14 @@ public class Level {
 						}
 					}
 					caseNbOnLine++;
-					i+=10;
+					i += Level.SQUARE_SIZE;
 				}
 				
 				caseNbOnLine=0;
 				list.add(caseLine);
 				System.out.println(caseLine.size());
-				i=0;
-				j=j+10;
+				i = 0;
+				j += Level.SQUARE_SIZE;
 			}
 			
 			
@@ -222,7 +228,7 @@ public class Level {
 				}
 				
 				//Creating the Pacman we'll keep a reference to for later
-				this.pacman = new Pac_Man(y*10,x*10);
+				this.pacman = new Pac_Man(y*Level.SQUARE_SIZE, x*Level.SQUARE_SIZE);
 				
 				//Adding the Pacman to the square
 				this.list.get(x).get(y).setPacMan(this.pacman);
@@ -241,7 +247,7 @@ public class Level {
 				assert(y >  this.list.get(0).size()) : "Y location of bonus greater than board maximum";
 				
 				System.out.println("Bonus detected @ " + x + "," + y);
-				BonusEntity newBonus = new BonusEntity(Bonus.SUPER_GOMME, this.index, y*10,x*10);
+				BonusEntity newBonus = new BonusEntity(Bonus.SUPER_GOMME, this.index, y*Level.SQUARE_SIZE,x*Level.SQUARE_SIZE);
 				this.bonusList.remove(this.list.get(x).get(y).getBonus());
 				this.bonusList.add(newBonus);
 				this.list.get(x).get(y).setBonus(newBonus);
@@ -267,7 +273,7 @@ public class Level {
 					this.list.get(x).get(y).setBonus(null);
 				
 				//Keeping a reference to the new ghost
-				Fantome newGhost = new Fantome(y*10,x*10);
+				Fantome newGhost = new Fantome(y*Level.SQUARE_SIZE,x*Level.SQUARE_SIZE);
 				this.ghostList.add(newGhost);
 				
 				//Adding it to the board
@@ -287,18 +293,17 @@ public class Level {
 		int endState = this.checkEndGame();
 		
 		if(endState == 0) {
-						
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				System.out.println("Error while sleeping");
-				e.printStackTrace();
-			}
-
 			//Moving the player and the ghosts
 			SwingUtilities.invokeLater(new Runnable() {
-	            @Override
+	            @Override	            
 	            public void run() {
+	            	//This allows for a reasonable speed for the ghost
+	            	try {
+	    				Thread.sleep(100);
+	    			} catch (InterruptedException e) {
+	    				System.out.println("Error while sleeping");
+	    				e.printStackTrace();
+	    			}
 	            	Level.this.updateGhost();
 	            }
 	        });
@@ -337,8 +342,8 @@ public class Level {
 	public void updateGhost() {
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
-			int x = ghost.posHor/10;
-			int y = ghost.posVer/10;
+			int x = ghost.posHor/Level.SQUARE_SIZE;
+			int y = ghost.posVer/Level.SQUARE_SIZE;
 			if(this.list.get(y).get(x).isWalkable())
 				this.modifiedObjectList.add(0, this.list.get(y).get(x));
 			if(this.list.get(y).get(x).getBonus() != null)
@@ -358,7 +363,7 @@ public class Level {
 				break;
 			}
 			
-			ghost.moveTo(x*10, y*10);
+			ghost.moveTo(x*Level.SQUARE_SIZE, y*Level.SQUARE_SIZE);
 			this.modifiedObjectList.add(0, this.list.get(y).get(x));
 			this.modifiedObjectList.add(ghost);
 		}
@@ -374,10 +379,10 @@ public class Level {
 			ghost.posHor = 110+z;
 			ghost.posVer = 140;
 			ghost.draw();
-			this.list.get(x/10).get(y/10).setFantome(null);
+			this.list.get(x/Level.SQUARE_SIZE).get(y/Level.SQUARE_SIZE).setFantome(null);
 		}
-		i=i+1;
-		z=z+10;*/
+		i++;
+		z+=Level.SQUARE_SIZE;*/
 	}
 	
 	/**
@@ -391,14 +396,9 @@ public class Level {
 		boolean bas = Canvas.getCanvas().isDownPressed();
 		
 		//New coordinates for Pac
-		int x = pacman.getX()/10;
-		int y = pacman.getY()/10;
+		int x = pacman.getX()/Level.SQUARE_SIZE;
+		int y = pacman.getY()/Level.SQUARE_SIZE;
 		
-		//Current coordinates
-		/*
-		int currX = pacman.getX()/10;
-		int currY = pacman.getY()/10;
-		*/
 		Case currSquare = this.list.get(y).get(x);
 		
 		for(Fantome ghost : ghostList) {
@@ -434,7 +434,7 @@ public class Level {
 				currSquare.setPacMan(null);
 				
 				//Moving the Pac
-				pacman.moveTo(x*10, y*10);
+				pacman.moveTo(x*Level.SQUARE_SIZE, y*Level.SQUARE_SIZE);
 				
 				Case nextSquare = this.list.get(y).get(x);
 				nextSquare.setPacMan(this.pacman);

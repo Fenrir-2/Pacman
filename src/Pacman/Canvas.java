@@ -287,9 +287,9 @@ public class Canvas {
 
 
         /**
-	 * Initialize a {@link ColoredShape} instance composed of a
-	 * text and a color
-	 */
+         * Initialize a {@link ColoredShape} instance composed of a
+	 	 * text and a color
+	 	 */
         public ColoredShape(String text, int x, int y, Color color) {
             this.text = text;
             this.color = color;
@@ -298,6 +298,7 @@ public class Canvas {
         /**
          * Draw the shape using the given graphic object
          *
+         * @param image The image to draw
          * @param graphic AWT graphic object
          */
         public void draw(Graphics2D graphic, BufferedImage image) {
