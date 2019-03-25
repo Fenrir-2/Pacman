@@ -38,7 +38,7 @@ public class Canvas {
     /**
      * The canvas initial height
      */
-    public static final int HEIGHT = 290;
+    public static final int HEIGHT = 305;
     
     /**
      * The canvas initial background color

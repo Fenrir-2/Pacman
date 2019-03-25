@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 
 /**
@@ -140,6 +142,30 @@ public class Level {
 			object.draw();
 		}
 		
+		//Score footer
+		Drawable footer = new Drawable(0, Canvas.HEIGHT - 15) {
+			
+			@Override
+			public void draw() {
+				if(this.imageSprite == null) {
+					try {
+						this.imageSprite = ImageIO.read(new File("Footer.png"));
+					} catch (IOException e) {
+						System.out.println("Error while loading image: Footer.png");
+						e.printStackTrace();
+					}
+				}
+				
+				Canvas canvas = Canvas.getCanvas();
+				if(this.imageSprite != null)
+					canvas.draw(this.imageSprite, this.posHor, this.posVer);
+				
+			}
+			
+		};
+		
+		footer.draw();
+		
 		//Clearing the list so no objects are marked are modified
 		this.modifiedObjectList.clear();
 	}
@@ -244,8 +270,8 @@ public class Level {
 				
 				//Setting the default position
 				this.pacDefaultPos = new int[2];
-				this.pacDefaultPos[0] = x;
-				this.pacDefaultPos[1] = y;
+				this.pacDefaultPos[0] = y;
+				this.pacDefaultPos[1] = x;
 				
 				//Adding the Pacman to the square
 				this.list.get(x).get(y).setPacMan(this.pacman);
@@ -370,7 +396,8 @@ public class Level {
 	}
 	
 	/**
-	 * TODO: Description
+	 *  Updates the ghost object according to a random number and checks for collision with walls.
+     *  It also manages to update the location of ghosts
 	 */
 	public void updateGhost() {
 		for (Fantome ghost : ghostList) {
@@ -459,7 +486,7 @@ public class Level {
 						currSquare.setPacMan(null);
 						
 						//Moving it to the beginning position
-						this.list.get(this.pacDefaultPos[1]).get(this.pacDefaultPos[0]).setPacMan(this.pacman);
+						this.list.get(this.pacDefaultPos[0]).get(this.pacDefaultPos[1]).setPacMan(this.pacman);
 						this.pacman.moveTo(this.pacDefaultPos[0] * Level.SQUARE_SIZE, this.pacDefaultPos[1] * Level.SQUARE_SIZE);
 						
 						//Adding all the modified objects to the list
