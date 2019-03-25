@@ -1,6 +1,9 @@
 package Pacman;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -466,9 +469,6 @@ public class Level {
 						
 						//Removing 1 life
 						pacman.perdVie();
-						
-						//No need to check for input for the time being.
-						return;		
 					}
 				}
 			}
@@ -495,12 +495,30 @@ public class Level {
 				if(bonus != null){
 					pacman.addScore(bonus.getScore());
 					nextSquare.setBonus(null);
+					//In case it was a super bonus, we set the ghost and pacman accordingly
 					if(bonus.getBonusType() == Bonus.SUPER_GOMME) {
 						for(Fantome ghost : this.ghostList) {
 							ghost.setSpooked(true);
 						}
-						
 						this.pacman.setSuperMode(true);
+						
+						//In 15 seconds, deactivates all the effects we just set.
+						Timer bonusEndTimer = new Timer();
+						bonusEndTimer.schedule(new TimerTask() {
+
+							@Override
+							public void run() {
+								for(Fantome ghost : Level.this.ghostList) {
+									ghost.setSpooked(false);
+								}
+								
+								Level.this.pacman.setSuperMode(false);
+								
+								//This is in case the user hasn't moved since the timer ended
+								Level.this.modifiedObjectList.add(Level.this.pacman);
+							}
+							
+						}, 15000);
 					}
 					this.bonusList.remove(bonus);
 				}

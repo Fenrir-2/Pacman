@@ -2,6 +2,9 @@ package Pacman;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -73,7 +76,8 @@ public class Fantome extends MoveableEntity{
 	
 	/**
 	 * This method manages the Dead state of ghosts, and sets this state according to the entry parameter
-	 * When the state is set to true, the ghost sprite changes to "Fantome_dead.png"
+	 * When the state is set to true, the ghost sprite changes to "Fantome_dead.png" and a 5 seconds timer
+	 * is started. When it ends, the state is set back to false, and the ghost "revives" at its current location
 	 * Otherwise, it falls back to the default "Fantome.png"
 	 * 
 	 * @param state the new dead state
@@ -89,6 +93,16 @@ public class Fantome extends MoveableEntity{
 				System.out.println("Error while loading image: Fantome_dead.png");
 				e.printStackTrace();
 			}
+			
+			Timer bonusEndTimer = new Timer();
+			bonusEndTimer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {					
+					Fantome.this.setDead(false);
+				}
+				
+			}, 15000);
 		}else {
 			try {
 				this.imageSprite = ImageIO.read(new File("Fantome.png"));
