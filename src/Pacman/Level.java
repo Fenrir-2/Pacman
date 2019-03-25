@@ -157,9 +157,11 @@ public class Level {
 				}
 				
 				Canvas canvas = Canvas.getCanvas();
-				if(this.imageSprite != null)
+				if(this.imageSprite != null) {
 					canvas.draw(this.imageSprite, this.posHor, this.posVer);
-				
+					canvas.drawString(Integer.toString(Level.this.pacman.getScore()), 30, Canvas.HEIGHT - 3);
+					canvas.drawString(Integer.toString(Level.this.pacman.getPacManLives()), Canvas.WIDTH - 35, Canvas.HEIGHT - 3 );
+				}
 			}
 			
 		};
@@ -496,6 +498,9 @@ public class Level {
 						
 						//Removing 1 life
 						pacman.perdVie();
+						
+						//No need to check for input anymore as Pacman is dead
+						return;
 					}
 				}
 			}

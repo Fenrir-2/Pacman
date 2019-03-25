@@ -114,7 +114,9 @@ public class Canvas {
         this.frame.setResizable(false);
 
         this.frame.pack();
-
+        
+        this.frame.setTitle("PacMan");
+        
         this.canvas.addKeyListener(new KeyboardListener());
         this.canvas.setFocusable(true);
     }
@@ -184,6 +186,17 @@ public class Canvas {
         this.objects.remove(referenceObject);   // just in case it was already there
         this.objects.add(referenceObject);      // add at the end
         this.shapes.put(referenceObject, new ColoredShape(text, x, y, color));
+    }
+    
+    /**
+     * Draws a string onto the canvas
+     * 
+     * @param str string to draw
+     * @param x the x coordinate to draw the string
+     * @param y the y coordinate to draw the string
+     */
+    public void drawString(String str, int x, int y){
+        this.canvas.getGraphics().drawString(str,x,y);
     }
 
     /**
