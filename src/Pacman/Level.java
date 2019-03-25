@@ -463,7 +463,7 @@ public class Level {
 						this.pacman.moveTo(this.pacDefaultPos[0] * Level.SQUARE_SIZE, this.pacDefaultPos[1] * Level.SQUARE_SIZE);
 						
 						//Adding all the modified objects to the list
-						this.modifiedObjectList.add(0, this.list.get(pacman.getY()).get(pacman.getX()));
+						this.modifiedObjectList.add(0, this.list.get(pacman.getY()/10).get(pacman.getX()/10));
 						this.modifiedObjectList.add(0, currSquare);
 						this.modifiedObjectList.add(this.pacman);
 						
