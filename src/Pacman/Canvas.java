@@ -38,7 +38,7 @@ public class Canvas {
     /**
      * The canvas initial height
      */
-    public static final int HEIGHT = 320;
+    public static final int HEIGHT = 290;
     
     /**
      * The canvas initial background color
@@ -111,6 +111,7 @@ public class Canvas {
         this.frame.setContentPane(this.canvas);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocation(30, 30);
+        this.frame.setResizable(false);
 
         this.frame.pack();
 
