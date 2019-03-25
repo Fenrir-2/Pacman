@@ -67,6 +67,18 @@ public class Level {
 	protected ArrayList<Drawable> modifiedObjectList;
 	
 	/**
+	 * Holds all the defaults/starting positions for the differents ghosts
+	 * Referenced in squares, you need to multply by {@link #SQUARE_SIZE} to get the pixel location.
+	 */
+	protected ArrayList<int[]> ghostDefaultPos;
+	
+	/**
+	 * Holds the default/starting position for Pacman.
+	 * Referenced in squares, you need to multply by {@link #SQUARE_SIZE} to get the pixel location.
+	 */
+	protected int[] pacDefaultPos;
+	
+	/**
 	 * Level constructor, 
 	 * no params needed
 	 */
@@ -76,6 +88,7 @@ public class Level {
 		this.ghostList = new ArrayList<Fantome>();
 		this.bonusList = new ArrayList<BonusEntity>();
 		this.modifiedObjectList = new ArrayList<Drawable>();
+		this.ghostDefaultPos = new ArrayList<int[]>();
 		index = 1;
 		
 		this.changeList();
@@ -123,10 +136,6 @@ public class Level {
 		for(Drawable object : this.modifiedObjectList) {
 			object.draw();
 		}
-		
-		//Setting the label to the correct score
-		Canvas.getCanvas().getScoreLabel().setText("Score : " + Integer.toString(this.pacman.getScore()));
-		
 		
 		//Clearing the list so no objects are marked are modified
 		this.modifiedObjectList.clear();
@@ -230,6 +239,11 @@ public class Level {
 				//Creating the Pacman we'll keep a reference to for later
 				this.pacman = new Pac_Man(y*Level.SQUARE_SIZE, x*Level.SQUARE_SIZE);
 				
+				//Setting the default position
+				this.pacDefaultPos = new int[2];
+				this.pacDefaultPos[0] = x;
+				this.pacDefaultPos[1] = y;
+				
 				//Adding the Pacman to the square
 				this.list.get(x).get(y).setPacMan(this.pacman);
 			}
@@ -271,6 +285,9 @@ public class Level {
 				if(this.list.get(x).get(y).getBonus()!=null)
 					this.bonusList.remove(this.list.get(x).get(y).getBonus());
 					this.list.get(x).get(y).setBonus(null);
+				
+				//Adding the default position of this ghost to the list of default positions
+				this.ghostDefaultPos.add(new int[] {x,y});
 				
 				//Keeping a reference to the new ghost
 				Fantome newGhost = new Fantome(y*Level.SQUARE_SIZE,x*Level.SQUARE_SIZE);
@@ -326,7 +343,20 @@ public class Level {
 			}
 			
 			//Drawing the list of modified object, which is smaller.
-			this.drawModifiedList();
+			SwingUtilities.invokeLater(new Runnable() {
+	            @Override	            
+	            public void run() {
+	            	//This allows for a reasonable speed for the ghost
+	            	try {
+	    				Thread.sleep(11);
+	    			} catch (InterruptedException e) {
+	    				System.out.println("Error while sleeping");
+	    				e.printStackTrace();
+	    			}
+	            	Level.this.drawModifiedList();
+	            }
+	        });
+			
 			
 			//As long as everything is fine, keep computing new states
 			computeNextFrame();
@@ -342,8 +372,8 @@ public class Level {
 	public void updateGhost() {
 		for (Fantome ghost : ghostList) {
 			int deplacement = (int) (1 + Math.random() * ( 5 - 1 ));
-			int x = ghost.posHor/Level.SQUARE_SIZE;
-			int y = ghost.posVer/Level.SQUARE_SIZE;
+			int x = ghost.getX()/Level.SQUARE_SIZE;
+			int y = ghost.getY()/Level.SQUARE_SIZE;
 			if(this.list.get(y).get(x).isWalkable())
 				this.modifiedObjectList.add(0, this.list.get(y).get(x));
 			if(this.list.get(y).get(x).getBonus() != null)
@@ -367,26 +397,37 @@ public class Level {
 			this.modifiedObjectList.add(0, this.list.get(y).get(x));
 			this.modifiedObjectList.add(ghost);
 		}
-		
-		//Resetting the ghost to their original place.
-		/*
-		int i = 0;
-		int z = 0;
-		for(Fantome ghost : ghostList) {
-			int x = ghost.posHor;
-			int y = ghost.posVer;
-			this.list.get(14).get(11+i).setFantome(ghost);
-			ghost.posHor = 110+z;
-			ghost.posVer = 140;
-			ghost.draw();
-			this.list.get(x/Level.SQUARE_SIZE).get(y/Level.SQUARE_SIZE).setFantome(null);
-		}
-		i++;
-		z+=Level.SQUARE_SIZE;*/
 	}
 	
 	/**
-	 * TODO: Description
+	 * Resets all the ghost to their starting positions according to what has been found in
+	 * {@link #changeList()}
+	 */
+	public void resetGhost() {		
+		if(ghostList.size() == ghostDefaultPos.size())
+			System.out.println("More ghost then there are default positions.");
+		
+		//Used to access all the default positions in order
+		int i = 0;
+		for(Fantome ghost : ghostList) {
+			//Retrieving the list of default positions
+			int x = ghostDefaultPos.get(i)[0];
+			int y = ghostDefaultPos.get(i)[1];
+			
+			//Moving the ghost and setting the squares accordingly
+			this.list.get(ghost.getY()).get(ghost.getX()).setFantome(null);
+			this.list.get(y).get(x).setFantome(ghost);
+			ghost.moveTo(x, y);
+			
+			//Adding the squares and the ghost to the modified objects list so they can be redrawn
+			this.modifiedObjectList.add(ghost);
+			this.modifiedObjectList.add(0, this.list.get(y).get(x));
+			this.modifiedObjectList.add(0, this.list.get(ghost.getY()).get(ghost.getX()));
+		}
+	}
+	
+	/**
+	 * Updates the Pacman object according to the input and checks for collision with walls, ghost, and bonuses, and then react accordingly.
 	 */
 	public void updatePacMan() {
 		//Retrieving the input.
@@ -403,26 +444,36 @@ public class Level {
 		
 		for(Fantome ghost : ghostList) {
 			if(ghost.checkCollision(pacman)) {
-				//Removing the pacman from the current square
-				currSquare.setPacMan(null);
-				
-				//Moving it to the beginning position
-				this.list.get(23).get(13).setPacMan(this.pacman);
-				this.pacman.moveTo(130, 230);
-				this.modifiedObjectList.add(this.pacman);
-				
-				//Removing 1 life
-				if(!pacman.getSuperMode())
-					pacman.perdVie();
-				else
-					ghost.setDead(true);
-				
-				//No need to check for input for the time being.
-				return;		
+				//If the ghost is dead, we simply ignore it
+				if(!ghost.getDead()) {
+					//If we are in super mode, we set the ghost to dead and add 200 to the score
+					if(ghost.getSpooked() || pacman.getSuperMode()) {
+						pacman.addScore(200);
+						ghost.setDead(true);
+						
+					}else {
+						//Removing the pacman from the current square
+						currSquare.setPacMan(null);
+						
+						//Moving it to the beginning position
+						this.list.get(this.pacDefaultPos[1]).get(this.pacDefaultPos[0]).setPacMan(this.pacman);
+						this.pacman.moveTo(this.pacDefaultPos[0] * Level.SQUARE_SIZE, this.pacDefaultPos[1] * Level.SQUARE_SIZE);
+						
+						//Adding all the modified objects to the list
+						this.modifiedObjectList.add(0, this.list.get(pacman.getY()).get(pacman.getX()));
+						this.modifiedObjectList.add(0, currSquare);
+						this.modifiedObjectList.add(this.pacman);
+						
+						//Removing 1 life
+						pacman.perdVie();
+						
+						//No need to check for input for the time being.
+						return;		
+					}
+				}
 			}
 		}
 		
-		//Whole version:
 	 	x += gauche?-1:0;
 	 	x += droite?1:0;
 	 	y += haut?-1:0;
@@ -445,7 +496,11 @@ public class Level {
 					pacman.addScore(bonus.getScore());
 					nextSquare.setBonus(null);
 					if(bonus.getBonusType() == Bonus.SUPER_GOMME) {
+						for(Fantome ghost : this.ghostList) {
+							ghost.setSpooked(true);
+						}
 						
+						this.pacman.setSuperMode(true);
 					}
 					this.bonusList.remove(bonus);
 				}

@@ -13,7 +13,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -99,11 +98,6 @@ public class Canvas {
     private boolean upPressed, downPressed, leftPressed, rightPressed;
 
     /**
-     * The score label
-     */
-    private JLabel scoreLabel;
-
-    /**
      * Create a Canvas.
      */
     private Canvas() {
@@ -112,17 +106,11 @@ public class Canvas {
 
         this.canvas = new CanvasPane();
         this.canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        this.canvas.setDoubleBuffered(true);
-        
+
         this.frame = new JFrame();
         this.frame.setContentPane(this.canvas);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocation(30, 30);
-        
-        this.scoreLabel = new JLabel("Score: "); 
-        this.frame.add(scoreLabel);
-        this.scoreLabel.setVisible(true);
-        this.scoreLabel.setLocation(0, 0);
 
         this.frame.pack();
 
@@ -151,16 +139,7 @@ public class Canvas {
     public void close() {
     	this.frame.dispose();
     }
-    
-    /**
-     * Getter of the scoreLabel field.
-     * 
-     * @return the score JLabel
-     */
-    public JLabel getScoreLabel() {
-		return this.scoreLabel;
-    }
-    
+
     /**
      * Wait for a specified number of milliseconds before finishing. This
      * provides an easy way to specify a small delay which can be used when

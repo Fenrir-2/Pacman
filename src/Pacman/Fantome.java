@@ -54,7 +54,7 @@ public class Fantome extends MoveableEntity{
 		this.spooked = state;
 		assert(this.spooked == state) : "L'état spooked des fantomes n'est pas respecté";
 		
-		if(this.dead == true) {
+		if(this.spooked == true) {
 			try {
 				this.imageSprite = ImageIO.read(new File("Fantome_spooked.png"));
 			} catch (IOException e) {
