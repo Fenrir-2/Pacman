@@ -6,27 +6,45 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Short class desciption
+ * The class Case represents a square on the board.
+ * Every single Case is either Walkable or not
+ * A Case possesses a location on the board and can also possess a {@link Pacman.BonusEntity}, 
+ * a {@link Pacman.Fantome} or a {@link Pacman.Pac_Man}
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
  */
 public class Case extends Drawable{
 	
+	/**
+	 * Attribute to know if a case object is walkable or not
+	 */
 	protected boolean walkable;
+	
+	/**
+	 * The bonus located on the case object
+	 */
 	protected BonusEntity bonus;
+	
+	/**
+	 * The pacman located on the case object
+	 */
 	protected Pac_Man pacman;
+	
+	/**
+	 * the ghost located on the case object
+	 */
 	protected Fantome fantome;
 	
 	/**
-	 * To Do
+	 *  Main constructor for Case objects.
 	 * 
-	 * @param walkable
-	 * @param bonus
-	 * @param pacman
-	 * @param fantome
-	 * @param x
-	 * @param y
+	 * @param walkable To put a Case walkable or not
+	 * @param bonus To put a bonus on a Case
+	 * @param pacman To put a pacman on a Case
+	 * @param fantome To put a ghost on a Case
+	 * @param x Location x of the Case
+	 * @param y Location y of the case
 	 */
 	public Case(boolean walkable, BonusEntity bonus, Pac_Man pacman, Fantome fantome, int x, int y) {
 		super(x, y);
@@ -43,7 +61,7 @@ public class Case extends Drawable{
 		try {
 			this.imageSprite = ImageIO.read(new File(filename));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while loading image: " + filename);
 			e.printStackTrace();
 		}		
 	}
@@ -69,7 +87,7 @@ public class Case extends Drawable{
 	/**
 	 * Changes the bonus on the square.
 	 * 
-	 * @param bonus
+	 * @param bonus the {@link #bonus} to set on the square
 	 */
 	public void setBonus(BonusEntity bonus) {
 		this.bonus = bonus;
@@ -77,7 +95,6 @@ public class Case extends Drawable{
 	
 	/**
 	 * Return the Pacman on the square, which should be the only Pacman in the game
-	 * 
 	 * @return The Pacman on the square
 	 */
 	public Pac_Man getPacMan() {
@@ -112,7 +129,7 @@ public class Case extends Drawable{
 	}
 	
 	/**
-	 * 
+	 * Draws the Case on the canvas
 	 */
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();

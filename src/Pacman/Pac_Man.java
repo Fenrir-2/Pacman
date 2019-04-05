@@ -6,7 +6,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Short class description
+ * Pacman class represents the entity "PacMan" on the board
+ * It's a movable entity with lives and the possibility to 
+ * evolve in a SuperMode to eat ghosts for a short amount of time (15 seconds)
  * 
  * @author Nicolas FONNIER, Henri GLEVEAU
  *
@@ -14,74 +16,115 @@ import javax.imageio.ImageIO;
 public class Pac_Man extends MoveableEntity{
 	
 	/**
-	 * 
+	 * Nombre de vie de Pacman, initialisÃ© Ã  3
 	 */
 	protected int nbVies = 3;
 	
 	/**
-	 * 
+	 * Boolean for Pacman SuperMode, 
 	 */
 	protected boolean SuperMode = false;
 	
 	/**
-	 * 
+	 * Pacman's Score
 	 */
-	protected int Score = 0;
+	protected int score = 0;
 	
 	/**
+	 * Main constructor for Pac_Man objects.
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x The horizontal position
+	 * @param y The vertical position
 	 */
 	public Pac_Man(int x, int y) {
 		super(x, y);
 		try {
 			this.imageSprite = ImageIO.read(new File("Pacman.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error while loading image: Pacman.png");
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * 
+	 * Method for Pacman to lose a life
 	 */
 	public void perdVie() {
 		this.nbVies = this.nbVies-1;
+		assert(this.nbVies >= 0) : "Number of lives below zero";
+		assert(this.nbVies == this.nbVies-1) : "Le nombre de vie de pacman n'a pas été mis à  jour correctement";
 	}
 	
 	/**
+	 * Changes the Pac_Man super mode state.
+	 * When the state is set to true, Pacman sprite changes to "Pacman_super.png"
+	 * Otherwise, it falls back to the default "Pacman.png"
 	 * 
-	 * @param state
-	 * @return
+	 * @param state the new {@link #SuperMode} state
 	 */
-	public boolean setSuperMode(boolean state) {
+
+	public void setSuperMode(boolean state) {
 		this.SuperMode = state;
+		assert(this.SuperMode == state) : "L'état du SuperMode n'est pas respecté";
+		
+		if(this.SuperMode == true) {
+			try {
+				this.imageSprite = ImageIO.read(new File("Pacman_super.png"));
+			} catch (IOException e) {
+				System.out.println("Error while loading image: Pacman_super.png");
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				this.imageSprite = ImageIO.read(new File("Pacman.png"));
+			} catch (IOException e) {
+				System.out.println("Error while loading image: Pacman.png");
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Getter of Pacman's Supermode
+	 * @return The SuperMode of Pacman
+	 */
+	public boolean getSuperMode() {
 		return this.SuperMode;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter of Pacman's lives
+	 * @return Pacman's lives number
 	 */
 	public int getPacManLives() {
 		return this.nbVies;
 	}
 	
 	/**
+	 * Adds an integer to Pac_Man's score
 	 * 
-	 * @param score
+	 * @param score the score of the bonus pacman eats. Must be positive
 	 */
-	public void addscore(int score) {
-		this.Score = this.Score+score;
+	public void addScore(int score) {
+		assert(score > 0) : "Negative score received";
+		this.score = this.score+score;
+		assert(this.score > 0) : "Negative score after addScore";
 	}
 	
 	/**
-	 * 
+	 * Draw the Entity PacMan on the canvas
 	 */
 	public void draw() {
 		Canvas canvas = Canvas.getCanvas();
         canvas.draw(this.imageSprite, this.posHor, this.posVer);
+	}
+	/**
+	 * Score getter.
+	 * 
+	 * @return Pacman's score
+	 */
+	public int getScore() {
+		return this.score;
 	}
 
 }
