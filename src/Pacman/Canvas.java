@@ -16,6 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/*
+ * TODO: ADD A LAYOUT MANAGER TO FIX THE SCORE
+ */
+
 /**
  * Canvas is a class to allow for simple graphical drawing on a canvas.
  *
@@ -34,7 +38,7 @@ public class Canvas {
     /**
      * The canvas initial height
      */
-    public static final int HEIGHT = 290;
+    public static final int HEIGHT = 305;
     
     /**
      * The canvas initial background color
@@ -107,9 +111,12 @@ public class Canvas {
         this.frame.setContentPane(this.canvas);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocation(30, 30);
+        this.frame.setResizable(false);
 
         this.frame.pack();
-
+        
+        this.frame.setTitle("PacMan");
+        
         this.canvas.addKeyListener(new KeyboardListener());
         this.canvas.setFocusable(true);
     }
@@ -127,6 +134,13 @@ public class Canvas {
                 canvas.repaint();
             }
         });
+    }
+    
+    /**
+     * Destroys the main JFrame component and closes the window
+     */
+    public void close() {
+    	this.frame.dispose();
     }
 
     /**
@@ -172,6 +186,17 @@ public class Canvas {
         this.objects.remove(referenceObject);   // just in case it was already there
         this.objects.add(referenceObject);      // add at the end
         this.shapes.put(referenceObject, new ColoredShape(text, x, y, color));
+    }
+    
+    /**
+     * Draws a string onto the canvas
+     * 
+     * @param str string to draw
+     * @param x the x coordinate to draw the string
+     * @param y the y coordinate to draw the string
+     */
+    public void drawString(String str, int x, int y){
+        this.canvas.getGraphics().drawString(str,x,y);
     }
 
     /**
@@ -255,9 +280,9 @@ public class Canvas {
 
 
         /**
-	 * Initialize a {@link ColoredShape} instance composed of a
-	 * text and a color
-	 */
+         * Initialize a {@link ColoredShape} instance composed of a
+	 	 * text and a color
+	 	 */
         public ColoredShape(String text, int x, int y, Color color) {
             this.text = text;
             this.color = color;
@@ -266,6 +291,7 @@ public class Canvas {
         /**
          * Draw the shape using the given graphic object
          *
+         * @param image The image to draw
          * @param graphic AWT graphic object
          */
         public void draw(Graphics2D graphic, BufferedImage image) {
